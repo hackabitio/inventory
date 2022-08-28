@@ -19,7 +19,7 @@ const createTheCode = txt => {
   qrcode.save(exportLocation + fileName + ".svg", function (error) {
     if (error) throw error
 
-    const svgQr = sharp(exportLocation + fileName + '.svg')
+    sharp(exportLocation + fileName + '.svg')
       .png()
       .toFile(exportLocation + fileName + ".png")
       .then(function (info) {
@@ -34,14 +34,14 @@ const createTheCode = txt => {
 }
 
 module.exports = (qrTxt) => {
-  // if (typeof qrTxt == 'string') {
-  //   createTheCode(qrTxt)
-  //   return "The code generated"
-  // } else if (Array.isArray(qrTxt)) {
-  //   qrTxt.forEach(q => {
-  //     createTheCode(q)
-  //   })
-  // } else {
-  //   return "Please provide a text to be converted to QR code."
-  // }
+  if (typeof qrTxt == 'string') {
+    createTheCode(qrTxt)
+    return "The code generated"
+  } else if (Array.isArray(qrTxt)) {
+    qrTxt.forEach(q => {
+      createTheCode(q)
+    })
+  } else {
+    return "Please provide a text to be converted to QR code."
+  }
 }

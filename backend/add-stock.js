@@ -15,16 +15,13 @@ module.exports = (ctx) => {
     sku = product.name.toLowerCase().replace(/\s/g, '-')
   }
 
-  console.log('SKU: ', sku)
   db.push(sku, product)
 
-  console.log('Product to be added: ', product)
-
-    ctx.body = {
-      msg: 'Products added',
-      ids: product.id
-    }
-    ctx.status = 201
+  ctx.body = {
+    msg: 'Products added',
+    ids: product.id
+  }
+  ctx.status = 201
 }
 
 
