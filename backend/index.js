@@ -21,12 +21,12 @@ const createTheCode = txt => {
     ecl: "M"
   })
 
-  qrcode.save(fileName + ".svg", function (error) {
+  qrcode.save('./images/' + fileName + ".svg", function (error) {
     if (error) throw error;
 
-    const svgQr = sharp(fileName + '.svg')
+    const svgQr = sharp('./images/' + fileName + '.svg')
       .png()
-      .toFile(fileName + ".png")
+      .toFile('./images/' + fileName + ".png")
       .then(function (info) {
         console.log(info)
       })
