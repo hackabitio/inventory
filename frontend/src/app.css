@@ -77,3 +77,15 @@ button:focus:not(:focus-visible) {
 		font-size: 2.4rem;
 	}
 }
+
+table {
+	width: 100%;
+}
+
+.table-header {
+	background-color: #b9c6d2;
+}
+
+tr:nth-child(2n-1) {
+	background-color: var(--secondary-color);
+}

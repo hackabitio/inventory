@@ -1,5 +1,4 @@
 import {error} from "@sveltejs/kit"
-export const prerender = true
 import { api } from './api'
 
 export const load = async ({ locals }) => {
@@ -12,8 +11,12 @@ export const load = async ({ locals }) => {
   }
 
   if (response.status === 200) {
+    let stock = await response.json()
+    if (locals) {
+      locals.theStock = stock
+    }
     return {
-      stock: await response.json()
+      stock
     }
   }
 

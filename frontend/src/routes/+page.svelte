@@ -47,16 +47,4 @@
 		width: 100%;
 	}
 
-	table {
-		width: 100%;
-	}
-
-	.table-header {
-		background-color: #b9c6d2;
-	}
-
-	tr:nth-child(2n) {
-		background-color: var(--secondary-color);
-	}
-
 </style>
