@@ -12,6 +12,7 @@
 		"@sveltejs/kit": "next",
 		"eslint": "^8.16.0",
 		"eslint-plugin-svelte3": "^4.0.0",
+		"sass": "^1.54.5",
 		"svelte": "^3.46.0",
 		"vite": "^3.0.8"
 	},
