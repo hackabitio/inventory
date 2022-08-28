@@ -4,6 +4,7 @@ const uuid = require('uuid')
 
 let stockDb = new jsoning("./db/stock.json")
 let addingDb = new jsoning("./db/adding.json")
+let releasingDb = new jsoning("./db/releasing.json")
 
 const addProduct = (ctx) => {
   let product = ctx.request.body.product
@@ -61,4 +62,49 @@ const addStock = (ctx) => {
   }
 }
 
-module.exports = { addProduct, addStock }
+const releaseStock = (ctx) => {
+  let product = ctx.request.body.product
+  let id = uuid.v4()
+  let sku = product.sku
+  if (typeof sku === 'undefined') {
+    ctx.body = 'product SKU is required'
+    ctx.status = 201
+  } else {
+    sku = sku.toLowerCase().replace(/\s/g, '-')
+    // Get the product from available stock database stockDb
+    let theProduct = stockDb.get(sku)
+    if (theProduct) {
+      if (Array.isArray(theProduct)) {
+        theProduct = theProduct[0]
+      }
+      releasingDb.push(id, {
+        id,
+        time: new Date(),
+        sku: theProduct.sku,
+        qty: product.qty
+      })
+      let oldQty = theProduct.qty
+      if (oldQty >= product.qty) {
+        let newQty = oldQty - product.qty
+        theProduct.qty = newQty
+        stockDb.set(sku, theProduct)
+
+        ctx.body = {
+          msg: 'Products updated!',
+          newQty,
+          id: theProduct.id
+        }
+        ctx.status = 201
+      } else {
+        ctx.body = {
+          msg: 'You don\'t have sufficient quantity to deduct from.',
+          available: oldQty,
+          id: theProduct.id
+        }
+        ctx.status = 201
+      }
+    }
+  }
+}
+
+module.exports = { addProduct, addStock, releaseStock }
