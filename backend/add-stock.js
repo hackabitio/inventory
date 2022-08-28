@@ -16,7 +16,7 @@ const addProduct = (ctx) => {
   } else {
     sku = product.name.toLowerCase().replace(/\s/g, '-')
   }
-  stockDb.push(sku, product)
+  stockDb.set(sku, product)
 
   ctx.body = {
     msg: 'Products added',
@@ -107,6 +107,20 @@ const releaseStock = (ctx) => {
   }
 }
 
+const getProducts = (ctx) => {
+  let products = stockDb.all()
+  if (products) {
+    ctx.body = products
+    ctx.status = 200
+  } else {
+    ctx.body = {
+      msg: 'Sorry, no product found',
+    }
+    ctx.status = 200
+  }
+
+}
+
 const getProduct = (ctx) => {
   let sku = ctx.query.sku
   if (typeof sku === 'undefined') {
@@ -131,4 +145,4 @@ const getProduct = (ctx) => {
   }
 }
 
-module.exports = { addProduct, addStock, releaseStock, getProduct }
+module.exports = { addProduct, addStock, releaseStock, getProducts, getProduct }

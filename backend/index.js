@@ -6,6 +6,7 @@ const generateQr = require('./qrcode')
 const addProduct = require('./add-stock').addProduct
 const addStock = require('./add-stock').addStock
 const releaseStock = require('./add-stock').releaseStock
+const getProducts = require('./add-stock').getProducts
 const getProduct = require('./add-stock').getProduct
 
 const router = new Router()
@@ -16,7 +17,8 @@ router.post("/qr", generateQr)
 router.post("/add-product", addProduct)
 router.post("/add-stock", addStock)
 router.post("/release-stock", releaseStock)
-router.get("/get-product", getProduct)
+router.get("/products", getProducts)
+router.get("/product", getProduct)
 
 App.use(parser())
   .use(cors())
