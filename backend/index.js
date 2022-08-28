@@ -1,11 +1,12 @@
 const QRCode = require('qrcode-svg')
 const sharp = require('sharp')
 
-const Koa = require('koa');
-const parser = require("koa-bodyparser");
-const cors = require("@koa/cors");
-const Router = require("koa-router");
-const router = new Router();
+const Koa = require('koa')
+const parser = require("koa-bodyparser")
+const cors = require("@koa/cors")
+const Router = require("koa-router")
+const router = new Router()
+const exportLocation = './images/'
 
 const createTheCode = txt => {
   txt = txt.toLowerCase()
@@ -21,12 +22,12 @@ const createTheCode = txt => {
     ecl: "M"
   })
 
-  qrcode.save('./images/' + fileName + ".svg", function (error) {
-    if (error) throw error;
+  qrcode.save(exportLocation + fileName + ".svg", function (error) {
+    if (error) throw error
 
-    const svgQr = sharp('./images/' + fileName + '.svg')
+    const svgQr = sharp(exportLocation + fileName + '.svg')
       .png()
-      .toFile('./images/' + fileName + ".png")
+      .toFile(exportLocation + fileName + ".png")
       .then(function (info) {
         console.log(info)
       })
@@ -34,8 +35,8 @@ const createTheCode = txt => {
         console.log(err)
       })
 
-    console.log("QR Code saved!");
-  });
+    console.log("QR Code saved!")
+  })
 
 }
 
@@ -56,16 +57,16 @@ const generateQr = (ctx) => {
   ctx.status = 201
 }
 
-router.get("/test", (ctx) => (ctx.body = "Events List!"));
-router.post("/qr", generateQr);
+router.get("/test", (ctx) => (ctx.body = "Events List!"))
+router.post("/qr", generateQr)
 
-const App = new Koa();
-const port = 8000;
+const App = new Koa()
+const port = 8000
 
 
 App.use(parser())
   .use(cors())
   .use(router.routes())
   .listen(port, () => {
-    console.log(`Server listening http://127.0.0.1:${port}/`);
-  });
+    console.log(`Server listening http://127.0.0.1:${port}/`)
+  })
