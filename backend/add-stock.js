@@ -107,4 +107,28 @@ const releaseStock = (ctx) => {
   }
 }
 
-module.exports = { addProduct, addStock, releaseStock }
+const getProduct = (ctx) => {
+  let sku = ctx.query.sku
+  if (typeof sku === 'undefined') {
+    ctx.body = 'product SKU is required'
+    ctx.status = 201
+  } else {
+    sku = sku.toLowerCase().replace(/\s/g, '-')
+    // Get the product from available stock database stockDb
+    let product = stockDb.get(sku)
+    if (product) {
+      if (Array.isArray(product)) {
+        product = product[0]
+      }
+      ctx.body = product
+      ctx.status = 201
+    } else {
+      ctx.body = {
+        msg: 'Sorry, no product found',
+      }
+      ctx.status = 201
+    }
+  }
+}
+
+module.exports = { addProduct, addStock, releaseStock, getProduct }

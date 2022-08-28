@@ -6,6 +6,7 @@ const generateQr = require('./qrcode')
 const addProduct = require('./add-stock').addProduct
 const addStock = require('./add-stock').addStock
 const releaseStock = require('./add-stock').releaseStock
+const getProduct = require('./add-stock').getProduct
 
 const router = new Router()
 const App = new Koa()
@@ -15,6 +16,7 @@ router.post("/qr", generateQr)
 router.post("/add-product", addProduct)
 router.post("/add-stock", addStock)
 router.post("/release-stock", releaseStock)
+router.get("/get-product", getProduct)
 
 App.use(parser())
   .use(cors())
