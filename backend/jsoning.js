@@ -6,13 +6,17 @@ let db = new jsoning("./db/db.json");
     await db.set("birthday", "07-aug");
     await db.set("age", "13");
 
+    await db.set("object", {
+        theKey: 'key',
+        something: 'Something else'
+    })
     // push stuff to an array for a particular key
-    await db.push("transformers", "optimus prime");
-    await db.push("transformers", "bumblebee");
-    await db.push("transformers", "iron hide");
+    // await db.push("transformers", "optimus prime");
+    // await db.push("transformers", "bumblebee");
+    // await db.push("transformers", "iron hide");
 
     // simply log what get is (i forgot what the transformers were)
-    console.log(await db.get("transformers")); // [ 'optimus prime', 'bumblebee', 'iron hide' ]
+    // console.log(await db.get("transformers")); // [ 'optimus prime', 'bumblebee', 'iron hide' ]
 
     // just want to see what all is there
     console.log(await db.all()); // { object of the whole database contents }

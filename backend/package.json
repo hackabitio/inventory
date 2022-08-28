@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ./index.js",
+    "start": "nodemon ./index.js --ignore db/db.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -17,7 +17,8 @@
     "koa-bodyparser": "^4.3.0",
     "koa-router": "^12.0.0",
     "qrcode-svg": "^1.1.0",
-    "sharp": "^0.30.7"
+    "sharp": "^0.30.7",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.19"
