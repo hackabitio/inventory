@@ -18,7 +18,6 @@ router.get("/all-additions", getAdditions)
 router.get("/products", getProducts)
 router.get("/product", getProduct)
 
-
 App.use(parser())
   .use(cors())
   .use(router.routes())
