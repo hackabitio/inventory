@@ -15,7 +15,6 @@
 
 	const filterProducts = async () => {
 		filteredAdditions = data.additions.filter(product => product.sku.indexOf(filterSku) > -1)
-		console.log(filterSku)
 	}
 
 	const findProduct = async (e) => {
