@@ -84,8 +84,8 @@ export const addStock = async (ctx) => {
       const { additions } = db.data
       additions.push(newStock)
 
-      let oldQty = theProduct.qty
-      let newQty = oldQty + product.qty
+      let oldQty = parseInt(theProduct.qty)
+      let newQty = oldQty + parseInt(product.qty)
       theProduct.qty = newQty
       theProduct.additions.push(id)
       await db.write()
@@ -127,9 +127,9 @@ export const deductStock = async (ctx) => {
         qty: product.qty
       }
 
-      let oldQty = theProduct.qty
+      let oldQty = parseInt(theProduct.qty)
       if (oldQty >= product.qty) {
-        let newQty = oldQty - product.qty
+        let newQty = oldQty - parseInt(product.qty)
         theProduct.qty = newQty
         theProduct.deductions.push(id)
 
