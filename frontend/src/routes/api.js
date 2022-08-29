@@ -1,10 +1,11 @@
-const url = 'http://localhost:8000/products';
+const base = 'http://localhost:8000';
 
-export function api() {
-  return fetch(url, {
-    method: 'GET',
+export function api(method, resource, data) {
+  return fetch(`${base}/${resource}`, {
+    method,
     headers: {
       'content-type': 'application/json'
-    }
+    },
+    body: data && JSON.stringify(data)
   });
 }

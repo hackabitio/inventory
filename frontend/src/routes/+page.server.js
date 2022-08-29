@@ -1,8 +1,8 @@
 import {error} from "@sveltejs/kit"
 import { api } from './api'
 
-export const load = async ({ locals }) => {
-  const response = await api()
+export const load = async () => {
+  const response = await api('GET', 'products')
 
   if (response.status === 404) {
     return {
@@ -11,13 +11,7 @@ export const load = async ({ locals }) => {
   }
 
   if (response.status === 200) {
-    let stock = await response.json()
-    if (locals) {
-      locals.theStock = stock
-    }
-    return {
-      stock
-    }
+    return await response.json()
   }
 
   throw error(response.status)
