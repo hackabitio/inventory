@@ -192,3 +192,31 @@ export const getProducts = async (ctx) => {
   }
 
 }
+
+export const getProduct = async (ctx) => {
+  let sku = ctx.query.sku
+  if (typeof sku === 'undefined') {
+    ctx.body = 'product SKU is required'
+    ctx.status = 201
+  } else {
+    sku = sku.toLowerCase().replace(/\s/g, '-')
+    // Get the product from available stock database stockDb
+    await db.read()
+    db.data = db.data || { products: [] }
+    const { products } = db.data
+    let product = products.find((p) => p.sku === sku)
+
+    if (product) {
+      if (Array.isArray(product)) {
+        product = product[0]
+      }
+      ctx.body = product
+      ctx.status = 200
+    } else {
+      ctx.body = {
+        msg: 'Sorry, no product found',
+      }
+      ctx.status = 200
+    }
+  }
+}
