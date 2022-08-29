@@ -80,6 +80,7 @@
 			<th>Name</th>
 			<th>Quantity</th>
 			<th>Order price</th>
+			<th>QR code</th>
 		</tr>
 		{#each filteredProducts as product}
 			<tr>
@@ -87,6 +88,7 @@
 				<td>{product.name}</td>
 				<td>{product.qty}</td>
 				<td>{product.orderPrice}</td>
+				<td><img class="product-qr-code" src="http://localhost:8000/images/{product.sku}.png" alt=""></td>
 			</tr>
 		{/each}
 	</table>
@@ -116,4 +118,9 @@
 		margin-bottom: 10px;
 	}
 
+	.product-qr-code {
+		max-width: 80px;
+		display: block;
+		margin-inline: auto;
+	}
 </style>
