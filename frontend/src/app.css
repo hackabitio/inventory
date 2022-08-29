@@ -84,6 +84,7 @@ table {
 
 .table-header {
 	background-color: #b9c6d2;
+	line-height: 2;
 }
 
 td {
