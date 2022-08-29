@@ -117,7 +117,6 @@ export const deductStock = async (ctx) => {
     db.data = db.data || { products: [] }
     const { products } = db.data
     let theProduct = products.find((p) => p.sku === sku)
-    console.log(theProduct)
     if (theProduct) {
       if (Array.isArray(theProduct)) {
         theProduct = theProduct[0]
@@ -175,4 +174,21 @@ export const getAdditions = async (ctx) => {
     }
     ctx.status = 200
   }
+}
+
+export const getProducts = async (ctx) => {
+  await db.read()
+  db.data = db.data || { products: [] }
+  const { products } = db.data
+
+  if (products) {
+    ctx.body = products
+    ctx.status = 200
+  } else {
+    ctx.body = {
+      msg: 'Sorry, no product found',
+    }
+    ctx.status = 200
+  }
+
 }
