@@ -1,19 +1,10 @@
 <script>
-	import { enhance } from '$lib/form';
+	import { enhance, addToStock } from '$lib/form';
 	import { api } from './api'
 	export let data
 	let showNames = false
 
-	let addings = []
-	Object.keys(data.additions).forEach(product => {
-		addings.push(data.additions[product])
-	})
-
-	let products = []
-	Object.keys(data.products).forEach(product => {
-		products.push(data.products[product])
-	})
-	let filteredProducts = products
+	let filteredProducts = data.products
 
 	let filterSku
 	let filterName
@@ -31,7 +22,7 @@
 
 	const findProduct = async (e) => {
 		let name = e.target.value
-		filteredProducts = products.filter(product => product.name.toLowerCase().indexOf(name.toLowerCase()) > -1)
+		filteredProducts = data.products.filter(product => product.name.toLowerCase().indexOf(name.toLowerCase()) > -1)
 		showNames = name.length && filteredProducts.length
 	}
 
@@ -39,6 +30,15 @@
 		showNames = false
 		addSku = product.sku
 		addName = product.name
+	}
+
+	const submitForm = e => {
+		const formData = new FormData(e.target);
+		const submittedData = {};
+		for (let field of formData) {
+			const [key, value] = field;
+			submittedData[key] = value;
+		}
 	}
 
 	let formDialogOpen = false
@@ -54,16 +54,28 @@
 	<h1>Add more to stock</h1>
 
 	<dialog open="{formDialogOpen}" on:close={() => formDialogOpen = false} id="favDialog">
-		<form class="add-to-stock" method="dialog">
+		<form
+						class="add-to-stock"
+						method="dialog"
+						action="/add"
+						use:addToStock={{
+							result: async ({ form }) => {
+								form.reset();
+							}
+						}}
+		>
 			<h1>Add more to stock</h1>
 			<label>
 				Product name
-				<input type="text" name="name" bind:value={addName} placeholder="Product name" on:keyup={findProduct} />
+				<input autocomplete="off" type="text" id="addName" name="name" bind:value={addName} placeholder="Product name" on:keyup={findProduct} />
 				{#if showNames}
 					<div class="products-found">
 						<ul>
 							{#each filteredProducts as pr}
-								<li on:click={() => selectProduct(pr)}>{pr.name}</li>
+								<li on:click={() => selectProduct(pr)}>
+									{pr.name}
+									<span>sku: {pr.sku}</span>
+								</li>
 							{/each}
 						</ul>
 					</div>
@@ -71,19 +83,19 @@
 			</label>
 			<label>
 				SKU
-				<input type="text" name="sku" bind:value={addSku} placeholder="Product SKU" />
+				<input type="text" id="addSku" name="sku" bind:value={addSku} placeholder="Product SKU" />
 			</label>
 			<label>
 				Quantity
-				<input type="number" name="qty" placeholder="Quantity" />
+				<input type="number" id="qty" name="qty" placeholder="Quantity" />
 			</label>
 			<label>
 				Order price
-				<input type="number" name="orderPrice" placeholder="Order price" />
+				<input type="number" id="orderPrice" name="orderPrice" placeholder="Order price" />
 			</label>
 			<div>
 				<button value="cancel">Cancel</button>
-				<button id="confirmBtn" value="default">Add</button>
+				<button id="confirmBtn" value="default" type="submit">Add</button>
 			</div>
 		</form>
 	</dialog>
@@ -118,7 +130,7 @@
 			<th>Order price</th>
 			<th>Time</th>
 		</tr>
-		{#each addings as product}
+		{#each data.additions as product}
 			<tr>
 				<td>{product.sku}</td>
 				<td>{product.name}</td>
@@ -168,8 +180,13 @@
 	.products-found ul li {
 		cursor: pointer;
 		padding: 5px;
-
 	}
+
+	.products-found ul li span {
+		margin-left: 30px;
+		font-size: 16px;
+	}
+
 	.products-found ul li:hover {
 		background-color: var(--secondary-color);
 	}

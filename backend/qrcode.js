@@ -1,5 +1,5 @@
-const QRCode = require('qrcode-svg')
-const sharp = require('sharp')
+import QRCode from 'qrcode-svg'
+import sharp from 'sharp'
 const exportLocation = './images/'
 
 const createTheCode = txt => {
@@ -33,7 +33,7 @@ const createTheCode = txt => {
   })
 }
 
-module.exports = (qrTxt) => {
+export const generateQr = (qrTxt) => {
   if (typeof qrTxt == 'string') {
     createTheCode(qrTxt)
     return "The code generated"
