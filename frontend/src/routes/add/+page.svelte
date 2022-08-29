@@ -1,5 +1,5 @@
 <script>
-	import { enhance, addToStock } from '$lib/form';
+	import { addToStock } from '$lib/form';
 	import { api } from './api'
 	export let data
 	let showNames = false
