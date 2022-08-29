@@ -4,6 +4,22 @@
 	export let data
 	$: filteredProducts = Object.keys(data).map((key) => data[key])
 	let formDialogOpen = false
+	let filterSku
+	let filterName
+
+	const filterBySku = async () => {
+		const products = Object.keys(data).map((key) => data[key])
+		if (filterSku) {
+			filteredProducts = products.filter(product => product.sku.indexOf(filterSku) > -1)
+		}
+	}
+
+	const filterByName = async () => {
+		const products = Object.keys(data).map((key) => data[key])
+		if (filterName) {
+			filteredProducts = products.filter(product => product.name.toLowerCase().indexOf(filterName.toLowerCase()) > -1)
+		}
+	}
 
 </script>
 
@@ -53,6 +69,11 @@
 		<button id="addToStock" on:click={() => formDialogOpen = true}>Add stock</button>
 	</p>
 
+	<h2>Filter by:</h2>
+
+	<input name="text" autocomplete="off" bind:value="{filterSku}" on:keyup={filterBySku} placeholder="SKU" />
+	<input name="text" autocomplete="off" bind:value="{filterName}" on:keyup={filterByName} placeholder="Product name" />
+
 	<table>
 		<tr class="table-header">
 			<th>SKU</th>
@@ -72,14 +93,6 @@
 </section>
 
 <style>
-	section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		flex: 1;
-	}
-
 	h1 {
 		width: 100%;
 	}
