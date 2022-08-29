@@ -75,7 +75,6 @@ export const addStock = async (ctx) => {
       let oldQty = theProduct.qty
       let newQty = oldQty + product.qty
       theProduct.qty = newQty
-      products.push(theProduct)
       await db.write()
 
       ctx.body = {
