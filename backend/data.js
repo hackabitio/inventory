@@ -3,7 +3,6 @@ import { Low, JSONFile } from 'lowdb'
 import { fileURLToPath } from 'url'
 import { v4 as uuidv4 } from 'uuid'
 import {generateQr}  from "./qrcode.js"
-import jsoning from "jsoning";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const file = join(__dirname, 'database.json')
