@@ -10,6 +10,13 @@ const adapter = new JSONFile(file)
 const db = new Low(adapter)
 await db.read()
 
+export const createDb = async (ctx) => {
+  await db.read()
+  db.data = db.data || { products: [], additions: [], deductions: [] }
+  await db.write()
+  ctx.body = 'Database created'
+  ctx.status = 201
+}
 
 export const addProduct = async (ctx) => {
   let product = ctx.request.body.product
