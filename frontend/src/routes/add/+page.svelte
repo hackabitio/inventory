@@ -4,6 +4,7 @@
 	export let data
 	let showNames = false
 
+	$: filteredAdditions = data.additions
 	let filteredProducts = data.products
 
 	let filterSku
@@ -12,12 +13,9 @@
 	let addName
 	let product = null
 
-	const getProduct = async () => {
-		const response = await api('GET', `product?sku=${sku}`)
-
-		if (response.status === 200) {
-			product = await response.json()
-		}
+	const filterProducts = async () => {
+		filteredAdditions = data.additions.filter(product => product.sku.indexOf(filterSku) > -1)
+		console.log(filterSku)
 	}
 
 	const findProduct = async (e) => {
@@ -104,23 +102,13 @@
 	</p>
 
 	<h2>Filter by:</h2>
-	<form
-		class="new"
-		action="/add"
-		method="post"
-		use:enhance={{
-			result: async ({ form }) => {
-				form.reset();
-			}
-		}}
-	>
-		<input name="text" bind:value="{filterSku}" on:change={getProduct} placeholder="SKU" />
+
+		<input name="text" bind:value="{filterSku}" on:keyup={filterProducts} placeholder="SKU" />
 		{#if product }
 			<p>Product name: {product.name}</p>
 			<p>Available quantity: {product.qty}</p>
 		{/if}
 		<input name="text" bind:value="{filterName}" placeholder="Product name" />
-	</form>
 
 	<table>
 		<tr class="table-header">
@@ -130,7 +118,7 @@
 			<th>Order price</th>
 			<th>Time</th>
 		</tr>
-		{#each data.additions as product}
+		{#each filteredAdditions as product}
 			<tr>
 				<td>{product.sku}</td>
 				<td>{product.name}</td>
