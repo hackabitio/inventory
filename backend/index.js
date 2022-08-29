@@ -3,7 +3,7 @@ import parser from  "koa-bodyparser"
 import cors from  "@koa/cors"
 import Router from  "koa-router"
 import { generateQr } from './qrcode.js'
-import { createDb, addProduct, addStock, deductStock, getAdditions, getProducts, getProduct } from "./data.js"
+import { createDb, addProduct, addStock, deductStock, getAdditions, getProducts, getProduct, getDeductions } from "./data.js"
 
 const router = new Router()
 const App = new Koa()
@@ -15,6 +15,7 @@ router.post("/add-product", addProduct)
 router.post("/add-stock", addStock)
 router.post("/release-stock", deductStock)
 router.get("/all-additions", getAdditions)
+router.get("/all-deductions", getDeductions)
 router.get("/products", getProducts)
 router.get("/product", getProduct)
 

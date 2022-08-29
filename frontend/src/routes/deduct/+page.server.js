@@ -1,25 +1,24 @@
 import { error } from '@sveltejs/kit';
 import { api } from './api'
 
-export const load = async ({ locals }) => {
-  const additions = await api('GET', 'all-additions')
+export const load = async () => {
+  const deductions = await api('GET', 'all-deductions')
   const products = await api('GET', 'products')
-  if (additions.status === 404 && products.status === 404) {
+  if (deductions.status === 404 && products.status === 404) {
     return {
       stock: [],
       products: []
     }
   }
-  if (additions.status === 200 && products.status === 200) {
+  if (deductions.status === 200 && products.status === 200) {
     const returnVal = {
-      additions: await additions.json(),
+      deductions: await deductions.json(),
       products: await products.json()
     }
-    // console.log(returnVal)
     return returnVal
   }
 
-  throw error(additions.status)
+  throw error(deductions.status)
 }
 
 export const POST = async ({ request, locals }) => {
@@ -29,7 +28,7 @@ export const POST = async ({ request, locals }) => {
     const [key, value] = field;
     submittedData[key] = value;
   }
-  await api('POST', `add-stock`, {
+  await api('POST', `release-stock`, {
     product: submittedData
   })
 }

@@ -14,8 +14,8 @@
 			<li class:active={$page.url.pathname === '/add'}>
 				<a sveltekit:prefetch href="/add">Add stock</a>
 			</li>
-			<li class:active={$page.url.pathname === '/todos'}>
-				<a sveltekit:prefetch href="/todos">Release stock</a>
+			<li class:active={$page.url.pathname === '/deduct'}>
+				<a sveltekit:prefetch href="/deduct">Release stock</a>
 			</li>
 		</ul>
 		<svg viewBox="0 0 2 3" aria-hidden="true">

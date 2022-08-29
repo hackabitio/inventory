@@ -77,7 +77,7 @@ export const addStock = async (ctx) => {
         time: new Date(),
         name: theProduct.name,
         sku: theProduct.sku,
-        qty: product.qty,
+        qty: parseInt(product.qty),
         orderPrice: product.orderPrice
       }
       db.data = db.data || { additions: [] }
@@ -86,7 +86,7 @@ export const addStock = async (ctx) => {
 
       let oldQty = parseInt(theProduct.qty)
       let newQty = oldQty + parseInt(product.qty)
-      theProduct.qty = newQty
+      theProduct.qty = parseInt(newQty)
       theProduct.additions.push(id)
       await db.write()
 
@@ -124,13 +124,15 @@ export const deductStock = async (ctx) => {
         id,
         time: new Date(),
         sku: theProduct.sku,
-        qty: product.qty
+        name: theProduct.name,
+        qty: parseInt(product.qty),
+        sellPrice: parseInt(product.sellPrice),
       }
 
       let oldQty = parseInt(theProduct.qty)
       if (oldQty >= product.qty) {
         let newQty = oldQty - parseInt(product.qty)
-        theProduct.qty = newQty
+        theProduct.qty = parseInt(newQty)
         theProduct.deductions.push(id)
 
         db.data = db.data || { deductions: [] }
@@ -166,6 +168,22 @@ export const getAdditions = async (ctx) => {
 
   if (additions) {
     ctx.body = additions
+    ctx.status = 200
+  } else {
+    ctx.body = {
+      msg: 'Sorry, no product found',
+    }
+    ctx.status = 200
+  }
+}
+
+export const getDeductions = async (ctx) => {
+  await db.read()
+  db.data = db.data || { deductions: [] }
+  const { deductions } = db.data
+
+  if (deductions) {
+    ctx.body = deductions
     ctx.status = 200
   } else {
     ctx.body = {
