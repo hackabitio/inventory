@@ -86,6 +86,10 @@ table {
 	background-color: #b9c6d2;
 }
 
+td {
+	padding-left: 10px;
+}
+
 tr:nth-child(2n-1) {
 	background-color: var(--secondary-color);
 }
