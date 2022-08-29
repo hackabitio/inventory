@@ -1,6 +1,5 @@
 <script>
 	import { addToStock } from '$lib/form';
-	import { api } from './api'
 	export let data
 	let showNames = false
 
