@@ -80,6 +80,7 @@ button:focus:not(:focus-visible) {
 
 table {
 	width: 100%;
+	box-shadow: 1px 1px 10px 0px rgb(0 0 0 / 4%);
 }
 
 .table-header {
