@@ -33,14 +33,24 @@ export const addProduct = async (ctx) => {
   await db.read()
   db.data = db.data || { products: [] }
   const { products } = db.data
-  products.push(product)
-  await db.write()
+  let existingProduct = products.find((p) => p.sku === sku)
+  if (existingProduct) {
+    ctx.body = {
+      msg: 'Product already exists',
+      ids: existingProduct.id
+    }
+    ctx.status = 201
+  } else {
+    products.push(product)
+    await db.write()
 
-  ctx.body = {
-    msg: 'Products added',
-    ids: product.id
+    ctx.body = {
+      msg: 'Products added',
+      ids: product.id
+    }
+    ctx.status = 201
   }
-  ctx.status = 201
+
 }
 
 export const addStock = async (ctx) => {
