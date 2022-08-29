@@ -21,6 +21,8 @@ export const createDb = async (ctx) => {
 export const addProduct = async (ctx) => {
   let product = ctx.request.body.product
   product.id = uuidv4()
+  product.additions = []
+  product.deductions = []
   let sku = product.sku
   if (sku) {
     sku = sku.toLowerCase().replace(/\s/g, '-')
@@ -75,6 +77,7 @@ export const addStock = async (ctx) => {
       let oldQty = theProduct.qty
       let newQty = oldQty + product.qty
       theProduct.qty = newQty
+      theProduct.additions.push(id)
       await db.write()
 
       ctx.body = {
