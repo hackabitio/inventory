@@ -120,7 +120,7 @@
         <td>{product.sku}</td>
         <td>{product.name}</td>
         <td>{product.qty}</td>
-        <td>{product.sellPrice}</td>
+        <td>{product.sellPrice || ''}</td>
         <td>{product.time}</td>
       </tr>
     {/each}
