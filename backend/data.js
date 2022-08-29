@@ -3,6 +3,7 @@ import { Low, JSONFile } from 'lowdb'
 import { fileURLToPath } from 'url'
 import { v4 as uuidv4 } from 'uuid'
 import {generateQr}  from "./qrcode.js"
+import jsoning from "jsoning";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const file = join(__dirname, 'database.json')
@@ -157,5 +158,21 @@ export const deductStock = async (ctx) => {
       ctx.body = 'Product not found'
       ctx.status = 201
     }
+  }
+}
+
+export const getAdditions = async (ctx) => {
+  await db.read()
+  db.data = db.data || { additions: [] }
+  const { additions } = db.data
+
+  if (additions) {
+    ctx.body = additions
+    ctx.status = 200
+  } else {
+    ctx.body = {
+      msg: 'Sorry, no product found',
+    }
+    ctx.status = 200
   }
 }
