@@ -10,10 +10,13 @@
 	let filterName
 	let addSku
 	let addName
-	let product = null
 
-	const filterProducts = async () => {
-		filteredAdditions = data.additions.filter(product => product.sku.indexOf(filterSku) > -1)
+	const filterBySku = async () => {
+		filteredAdditions = data.additions.filter(product => product.sku.toLowerCase().indexOf(filterSku.toLowerCase()) > -1)
+	}
+
+	const filterByName = async () => {
+		filteredAdditions = data.additions.filter(product => product.name.toLowerCase().indexOf(filterName.toLowerCase()) > -1)
 	}
 
 	const findProduct = async (e) => {
@@ -101,12 +104,8 @@
 
 	<h2>Filter by:</h2>
 
-		<input name="text" bind:value="{filterSku}" on:keyup={filterProducts} placeholder="SKU" />
-		{#if product }
-			<p>Product name: {product.name}</p>
-			<p>Available quantity: {product.qty}</p>
-		{/if}
-		<input name="text" bind:value="{filterName}" placeholder="Product name" />
+		<input name="text" autocomplete="off" bind:value="{filterSku}" on:keyup={filterBySku} placeholder="SKU" />
+		<input name="text" autocomplete="off" bind:value="{filterName}" on:keyup={filterByName} placeholder="Product name" />
 
 	<table>
 		<tr class="table-header">
