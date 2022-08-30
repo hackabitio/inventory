@@ -68,6 +68,21 @@ button {
 	font-family: inherit;
 }
 
+button {
+	background-color: var(--accent-color);
+	border: none;
+	padding: 10px 30px;
+	font-size: 18px;
+	color: #FFF;
+	box-shadow: 2px 2px 2px rgb(0 0 0 / 10%);
+	cursor: pointer;
+}
+
+button:hover {
+	background-color: #ec5438;
+	box-shadow: 3px 3px 2px rgb(0 0 0 / 10%);
+}
+
 button:focus:not(:focus-visible) {
 	outline: none;
 }
