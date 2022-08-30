@@ -6,6 +6,12 @@
 	let formDialogOpen = false
 	let filterSku
 	let filterName
+	let addSku
+	let addName
+	let addQty
+	let addPrice
+	let submitDisabled
+	$: submitDisabled = !addSku || !addName || !addQty || !addPrice
 
 	const filterBySku = async () => {
 		const products = Object.keys(data).map((key) => data[key])
@@ -52,23 +58,23 @@
 			<h1>Add more to stock</h1>
 			<label>
 				Product name
-				<input autocomplete="off" type="text" id="addName" name="name" placeholder="Product name" />
+				<input autocomplete="off" type="text" id="addName" name="name" bind:value={addName} placeholder="Product name" />
 			</label>
 			<label>
 				SKU
-				<input type="text" id="addSku" name="sku" placeholder="Product SKU" />
+				<input type="text" id="addSku" name="sku" bind:value={addSku} placeholder="Product SKU" />
 			</label>
 			<label>
 				Quantity
-				<input type="number" id="qty" name="qty" placeholder="Quantity" />
+				<input type="number" id="qty" name="qty" bind:value={addQty} placeholder="Quantity" />
 			</label>
 			<label>
 				Order price
-				<input type="number" id="orderPrice" name="orderPrice" placeholder="Order price" />
+				<input type="number" id="orderPrice" name="orderPrice" bind:value={addPrice} placeholder="Order price" />
 			</label>
 			<div>
 				<button value="cancel" type="reset" on:click={() => formDialogOpen = false}>Cancel</button>
-				<button id="confirmBtn" value="default" type="submit">Add</button>
+				<button id="confirmBtn" value="default" type="submit" disabled={submitDisabled}>Add</button>
 			</div>
 		</form>
 	</dialog>

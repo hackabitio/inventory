@@ -83,6 +83,13 @@ button:hover {
 	box-shadow: 3px 3px 2px rgb(0 0 0 / 10%);
 }
 
+button:disabled,
+button[disabled] {
+	background-color: #cccccc;
+	color: #666666;
+	cursor: not-allowed;
+}
+
 button:focus:not(:focus-visible) {
 	outline: none;
 }

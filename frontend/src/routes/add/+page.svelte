@@ -10,6 +10,10 @@
 	let filterName
 	let addSku
 	let addName
+	let addQty
+	let addPrice
+	let submitDisabled
+	$: submitDisabled = !addSku || !addName || !addQty || !addPrice
 
 	const filterBySku = async () => {
 		filteredAdditions = data.additions.filter(product => product.sku.toLowerCase().indexOf(filterSku.toLowerCase()) > -1)
@@ -93,15 +97,15 @@
 			</label>
 			<label>
 				Quantity
-				<input type="number" id="qty" name="qty" placeholder="Quantity" />
+				<input type="number" id="qty" name="qty" bind:value={addQty} placeholder="Quantity" />
 			</label>
 			<label>
 				Order price
-				<input type="number" id="orderPrice" name="orderPrice" placeholder="Order price" />
+				<input type="number" id="orderPrice" name="orderPrice" bind:value={addPrice} placeholder="Order price" />
 			</label>
 			<div>
 				<button value="cancel" type="reset" on:click={() => formDialogOpen = false}>Cancel</button>
-				<button id="confirmBtn" value="default" type="submit">Add</button>
+				<button id="confirmBtn" value="default" type="submit" disabled={submitDisabled}>Add</button>
 			</div>
 		</form>
 	</dialog>
