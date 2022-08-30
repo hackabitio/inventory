@@ -35,15 +35,6 @@
 		addName = product.name
 	}
 
-	const submitForm = e => {
-		const formData = new FormData(e.target);
-		const submittedData = {};
-		for (let field of formData) {
-			const [key, value] = field;
-			submittedData[key] = value;
-		}
-	}
-
 	let formDialogOpen = false
 
 	const closeDialog = e => {
