@@ -16,11 +16,11 @@
 	$: submitDisabled = !addSku || !addName || !addQty || !addPrice
 
 	const filterBySku = async () => {
-		filteredAdditions = data.additions.filter(product => product.sku.toLowerCase().indexOf(filterSku.toLowerCase()) > -1)
+		filteredAdditions = filterSku ? data.additions.filter(product => product.sku.toLowerCase().indexOf(filterSku.toLowerCase()) > -1) : data.additions
 	}
 
 	const filterByName = async () => {
-		filteredAdditions = data.additions.filter(product => product.name.toLowerCase().indexOf(filterName.toLowerCase()) > -1)
+		filteredAdditions = filterName ? data.additions.filter(product => product.name.toLowerCase().indexOf(filterName.toLowerCase()) > -1) : data.additions
 	}
 
 	const findProduct = async (e) => {
@@ -79,7 +79,7 @@
 				Product name
 				<input autocomplete="off" type="text" id="addName" name="name" bind:value={addName} placeholder="Product name" on:keyup={findProduct} />
 				{#if showNames}
-					<div class="products-found">
+					<div class="products-autocomplete">
 						<ul>
 							{#each filteredProducts as pr}
 								<li on:click={() => selectProduct(pr)}>
@@ -158,32 +158,4 @@
 		margin-bottom: 10px;
 	}
 
-	.products-found {
-		position: absolute;
-		left: 0;
-		top: 100%;
-		right: 0;
-		z-index: 10;
-		background-color: #fff;
-		box-shadow: 2px 2px 4px rgb(0 0 0 / 20%);
-	}
-
-	.products-found ul {
-		list-style: none;
-		text-align: left;
-	}
-
-	.products-found ul li {
-		cursor: pointer;
-		padding: 5px;
-	}
-
-	.products-found ul li span {
-		margin-left: 30px;
-		font-size: 16px;
-	}
-
-	.products-found ul li:hover {
-		background-color: var(--secondary-color);
-	}
 </style>

@@ -16,11 +16,11 @@
   $: submitDisabled = !addSku || !addName || !addQty || !addPrice
 
   const filterBySku = async () => {
-    filteredDeductions = data.deductions.filter(product => product.sku.toLowerCase().indexOf(filterSku.toLowerCase()) > -1)
+    filteredDeductions = filterSku ? data.deductions.filter(product => product.sku.toLowerCase().indexOf(filterSku.toLowerCase()) > -1) : data.deductions
   }
 
   const filterByName = async () => {
-    filteredDeductions = data.deductions.filter(product => product.name.toLowerCase().indexOf(filterName.toLowerCase()) > -1)
+    filteredDeductions = filterName ? data.deductions.filter(product => product.name.toLowerCase().indexOf(filterName.toLowerCase()) > -1) : data.deductions
   }
 
   const findProduct = async (e) => {

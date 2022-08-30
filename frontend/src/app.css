@@ -117,3 +117,32 @@ td {
 tr:nth-child(2n-1) {
 	background-color: var(--secondary-color);
 }
+
+.products-autocomplete {
+	position: absolute;
+	left: 0;
+	top: 100%;
+	right: 0;
+	z-index: 10;
+	background-color: #fff;
+	box-shadow: 2px 2px 4px rgb(0 0 0 / 20%);
+}
+
+.products-autocomplete ul {
+	list-style: none;
+	text-align: left;
+}
+
+.products-autocomplete ul li {
+	cursor: pointer;
+	padding: 5px;
+}
+
+.products-autocomplete ul li span {
+	margin-left: 30px;
+	font-size: 16px;
+}
+
+.products-autocomplete ul li:hover {
+	background-color: var(--secondary-color);
+}

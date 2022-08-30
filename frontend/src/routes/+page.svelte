@@ -4,6 +4,8 @@
 	export let data
 	$: filteredProducts = Object.keys(data).map((key) => data[key])
 	let formDialogOpen = false
+	let foundProducts = Object.keys(data).map((key) => data[key])
+	let showNames = false
 	let filterSku
 	let filterName
 	let addSku
@@ -15,12 +17,24 @@
 
 	const filterBySku = async () => {
 		const products = Object.keys(data).map((key) => data[key])
-		filteredProducts = products.filter(product => product.sku.indexOf(filterSku) > -1)
+		filteredProducts = filterSku ? products.filter(product => product.sku.indexOf(filterSku) > -1) : products
 	}
 
 	const filterByName = async () => {
 		const products = Object.keys(data).map((key) => data[key])
-		filteredProducts = products.filter(product => product.name.toLowerCase().indexOf(filterName.toLowerCase()) > -1)
+		filteredProducts = filterName ? products.filter(product => product.name.toLowerCase().indexOf(filterName.toLowerCase()) > -1) : products
+	}
+
+	const findProduct = async (e) => {
+
+		foundProducts = Object.keys(data).map((key) => data[key]).filter(product => product.name.toLowerCase().indexOf(addName.toLowerCase()) > -1)
+		showNames = addName.length && foundProducts.length
+	}
+
+	const selectProduct = product => {
+		showNames = false
+		addSku = product.sku
+		addName = product.name
 	}
 
 	const closeDialog = e => {
@@ -54,7 +68,19 @@
 			<h1>Add more to stock</h1>
 			<label>
 				Product name
-				<input autocomplete="off" type="text" id="addName" name="name" bind:value={addName} placeholder="Product name" />
+				<input autocomplete="off" type="text" id="addName" name="name" bind:value={addName} placeholder="Product name"  on:keyup={findProduct} />
+				{#if showNames}
+					<div class="products-autocomplete">
+						<ul>
+							{#each foundProducts as pr}
+								<li on:click={() => selectProduct(pr)}>
+									{pr.name}
+									<span>sku: {pr.sku}</span>
+								</li>
+							{/each}
+						</ul>
+					</div>
+				{/if}
 			</label>
 			<label>
 				SKU
