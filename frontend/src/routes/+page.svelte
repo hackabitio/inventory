@@ -15,16 +15,12 @@
 
 	const filterBySku = async () => {
 		const products = Object.keys(data).map((key) => data[key])
-		if (filterSku) {
-			filteredProducts = products.filter(product => product.sku.indexOf(filterSku) > -1)
-		}
+		filteredProducts = products.filter(product => product.sku.indexOf(filterSku) > -1)
 	}
 
 	const filterByName = async () => {
 		const products = Object.keys(data).map((key) => data[key])
-		if (filterName) {
-			filteredProducts = products.filter(product => product.name.toLowerCase().indexOf(filterName.toLowerCase()) > -1)
-		}
+		filteredProducts = products.filter(product => product.name.toLowerCase().indexOf(filterName.toLowerCase()) > -1)
 	}
 
 	const closeDialog = e => {
