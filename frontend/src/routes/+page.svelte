@@ -21,12 +21,19 @@
 		}
 	}
 
+	const closeDialog = e => {
+		if (e.key === 'Escape') {
+			formDialogOpen = false
+			document.querySelector('form').reset();
+		}
+	}
 </script>
 
 <svelte:head>
 	<title>Available stock</title>
 	<meta name="description" content="Available stock" />
 </svelte:head>
+<svelte:window on:keydown={closeDialog} />
 
 <section>
 	<h1>Available stock</h1>

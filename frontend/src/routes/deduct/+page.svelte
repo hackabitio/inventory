@@ -42,19 +42,26 @@
 
   let formDialogOpen = false
 
+  const closeDialog = e => {
+    if (e.key === 'Escape') {
+      formDialogOpen = false
+      document.querySelector('form').reset();
+    }
+  }
 </script>
 
 <svelte:head>
-  <title>Add to stock</title>
+  <title>Deduct from stock</title>
   <meta name="description" content="Deduct from the stock" />
 </svelte:head>
+<svelte:window on:keydown={closeDialog} />
 
 <div class="content">
   <h1>Deduct from the stock</h1>
 
   <dialog open="{formDialogOpen}" on:close={() => formDialogOpen = false} id="favDialog">
     <form
-            class="add-to-stock"
+            class="deduct-from-stock"
             method="dialog"
             action="/deduct"
             use:addToStock={{
@@ -133,12 +140,12 @@
     box-shadow: 0 0 0 100vw rgb(0 0 0 / .7);
   }
 
-  .add-to-stock {
+  .deduct-from-stock {
     display: flex;
     flex-direction: column;
   }
 
-  .add-to-stock label {
+  .deduct-from-stock label {
     display: grid;
     grid-template-columns: 1fr 4fr;
     position: relative;

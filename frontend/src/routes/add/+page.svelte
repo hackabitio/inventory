@@ -42,12 +42,19 @@
 
 	let formDialogOpen = false
 
+	const closeDialog = e => {
+		if (e.key === 'Escape') {
+			formDialogOpen = false
+			document.querySelector('form').reset();
+		}
+	}
 </script>
 
 <svelte:head>
 	<title>Add to stock</title>
 	<meta name="description" content="Add to the stock" />
 </svelte:head>
+<svelte:window on:keydown={closeDialog} />
 
 <div class="content">
 	<h1>Add more to stock</h1>
