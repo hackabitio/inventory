@@ -100,7 +100,7 @@
         <input type="number" id="sellPrice" name="sellPrice" placeholder="Sell price" />
       </label>
       <div>
-        <button value="cancel">Cancel</button>
+        <button value="cancel" type="reset" on:click={() => formDialogOpen = false}>Cancel</button>
         <button id="confirmBtn" value="default" type="submit">Deduct</button>
       </div>
     </form>

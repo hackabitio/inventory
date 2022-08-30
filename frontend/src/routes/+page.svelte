@@ -67,7 +67,7 @@
 				<input type="number" id="orderPrice" name="orderPrice" placeholder="Order price" />
 			</label>
 			<div>
-				<button value="cancel">Cancel</button>
+				<button value="cancel" type="reset" on:click={() => formDialogOpen = false}>Cancel</button>
 				<button id="confirmBtn" value="default" type="submit">Add</button>
 			</div>
 		</form>
