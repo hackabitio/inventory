@@ -7,7 +7,7 @@ import koaSend from 'koa-send'
 import path from 'path'
 import {fileURLToPath} from 'url'
 import { generateQr } from './qrcode.js'
-import { createDb, addProduct, addStock, deductStock, getAdditions, getProducts, getProduct, getDeductions, deleteAddition, deleteDeduction, addCategory, getCategories } from "./data.js"
+import { createDb, addProduct, addStock, deductStock, getAdditions, getProducts, getProduct, getDeductions, deleteAddition, deleteDeduction, addCategory, getCategories, deleteCategory } from "./data.js"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -24,6 +24,7 @@ router.post("/add-category", addCategory)
 router.post("/add-stock", addStock)
 router.delete("/delete-addition", deleteAddition)
 router.delete("/delete-deduction", deleteDeduction)
+router.delete("/delete-category", deleteCategory)
 router.post("/release-stock", deductStock)
 router.get("/all-additions", getAdditions)
 router.get("/all-deductions", getDeductions)

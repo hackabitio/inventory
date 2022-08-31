@@ -79,7 +79,7 @@
 				<td>{category.name}</td>
 				<td class="record-actions">
 					<form
-						action="/add?_method=DELETE"
+						action="/category?_method=DELETE"
 						method="post"
 						use:enhance={{
 							pending: () => {

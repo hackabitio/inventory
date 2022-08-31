@@ -362,3 +362,30 @@ export const getCategories = async (ctx) => {
   }
 
 }
+
+
+export const deleteCategory = async (ctx) => {
+  let id = ctx.query.id
+  if (!id) {
+    ctx.body = 'The ID is required'
+    ctx.status = 200
+  }
+  // Get the product from available stock database stockDb
+  await db.read()
+
+  let theCategory = db.data.categories.filter(category => category.id === id)
+  db.data.categories = db.data.categories.filter(category => category.id !== id)
+  if (theCategory.length) {
+    await db.write()
+
+    ctx.body = {
+      msg: 'Category deleted!',
+      id: id
+    }
+    ctx.status = 200
+  } else {
+    ctx.body = 'Nothing found'
+    ctx.status = 200
+  }
+
+}

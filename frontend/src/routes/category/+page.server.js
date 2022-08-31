@@ -28,3 +28,12 @@ export const POST = async ({ request }) => {
     category: submittedData
   })
 }
+
+
+export const DELETE = async ({ request }) => {
+  const form = await request.formData()
+  const id = form.get('id')
+  if (id) {
+    await api('DELETE', `delete-category?id=${id}`)
+  }
+}
