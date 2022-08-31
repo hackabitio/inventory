@@ -62,6 +62,10 @@ h2 {
 	font-size: 1rem;
 }
 
+.center-align {
+	text-align: center;
+}
+
 input,
 button {
 	font-size: inherit;
@@ -133,6 +137,10 @@ td {
 
 tr:nth-child(2n-1) {
 	background-color: var(--secondary-color);
+}
+
+tr:hover:not(:first-child) {
+	background-color: var(--primary-color);
 }
 
 .products-autocomplete {

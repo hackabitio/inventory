@@ -122,7 +122,7 @@
 			<th>Quantity</th>
 			<th>Order price</th>
 			<th>Inventory box</th>
-			<th>QR code</th>
+			<th></th>
 		</tr>
 		{#each filteredProducts as product}
 			<tr>
@@ -131,8 +131,8 @@
 				<td>{product.qty}</td>
 				<td>{product.orderPrice}</td>
 				<td>{product.inventoryBox || ''}</td>
-				<td>
-					<a href="#" on:click={() => selectedProduct = product}>show</a>
+				<td class="center-align">
+					<a href="#" on:click={() => selectedProduct = product}>View</a>
 <!--					<img class="product-qr-code" src="http://localhost:8000/images/{product.sku}.png" alt="">-->
 				</td>
 			</tr>
