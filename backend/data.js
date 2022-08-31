@@ -351,6 +351,10 @@ export const getCategories = async (ctx) => {
   const { categories } = db.data
 
   if (categories) {
+    const { products } = db.data
+    categories.forEach(category => {
+      category.products = products.filter(product => product.category && product.category === category.id).length
+    })
     ctx.body = categories
     ctx.status = 200
   } else {

@@ -78,7 +78,7 @@
 			<tr>
 				<td>{category.id}</td>
 				<td>{category.name}</td>
-				<td>{category.name}</td>
+				<td>{category.products}</td>
 				<td class="record-actions">
 					<form
 						action="/category?_method=DELETE"
