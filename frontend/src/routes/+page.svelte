@@ -4,6 +4,7 @@
 	export let data
 	$: filteredProducts = Object.keys(data).map((key) => data[key])
 	let formDialogOpen = false
+	let productDialogOpen = false
 	let foundProducts = Object.keys(data).map((key) => data[key])
 	let showNames = false
 	let filterSku
@@ -13,6 +14,7 @@
 	let addQty
 	let addPrice
 	let submitDisabled
+	let selectedProduct = null
 	$: submitDisabled = !addSku || !addName || !addQty || !addPrice
 
 	const filterBySku = async () => {
@@ -40,6 +42,7 @@
 	const closeDialog = e => {
 		if (e.key === 'Escape') {
 			formDialogOpen = false
+			selectedProduct = null
 			document.querySelector('form').reset();
 		}
 	}
@@ -125,10 +128,35 @@
 				<td>{product.qty}</td>
 				<td>{product.orderPrice}</td>
 				<td>{product.inventoryBox || ''}</td>
-				<td><img class="product-qr-code" src="http://localhost:8000/images/{product.sku}.png" alt=""></td>
+				<td>
+					<a href="#" on:click={() => selectedProduct = product}>show</a>
+<!--					<img class="product-qr-code" src="http://localhost:8000/images/{product.sku}.png" alt="">-->
+				</td>
 			</tr>
 		{/each}
 	</table>
+	<dialog class="product-details-dialog" open={selectedProduct !== null} on:close={() => selectedProduct = null} id="productDetails">
+		{#if selectedProduct}
+			<h1 class="product-name">{selectedProduct.name}</h1>
+			<div class="product-details">
+				<p>
+					<strong>SKU:</strong> {selectedProduct.sku}
+				</p>
+				<p>
+					<strong>Quantity:</strong> {selectedProduct.qty}
+				</p>
+				<p>
+					<strong>Order price:</strong> {selectedProduct.orderPrice}
+				</p>
+				{#if selectedProduct.inventoryBox}
+					<p>
+						<strong>inventory placement:</strong> {selectedProduct.inventoryBox}
+					</p>
+				{/if}
+			</div>
+			<img class="product-qr-code" src="http://localhost:8000/images/{selectedProduct.sku}.png" alt="">
+		{/if}
+	</dialog>
 </section>
 
 <style>
@@ -156,8 +184,28 @@
 	}
 
 	.product-qr-code {
-		max-width: 80px;
+		grid-area: images;
 		display: block;
 		margin-inline: auto;
+	}
+
+	.product-details-dialog {
+		top: 50%;
+		transform: translateY(-50%);
+	}
+
+	.product-details-dialog[open] {
+		display: grid;
+		grid-template-areas:
+						"name name name"
+						"details details images";
+	}
+
+	.product-name {
+		grid-area: name;
+	}
+
+	.product-details {
+		grid-area: details;
 	}
 </style>
