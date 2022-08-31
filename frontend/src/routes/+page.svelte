@@ -4,7 +4,6 @@
 	export let data
 	$: filteredProducts = Object.keys(data).map((key) => data[key])
 	let formDialogOpen = false
-	let productDialogOpen = false
 	let foundProducts = Object.keys(data).map((key) => data[key])
 	let showNames = false
 	let filterSku
@@ -97,6 +96,10 @@
 				Order price
 				<input type="number" id="orderPrice" name="orderPrice" bind:value={addPrice} placeholder="Order price" />
 			</label>
+			<label>
+				More details
+				<textarea name="details" id="moreDetails" cols="30" rows="10"></textarea>
+			</label>
 			<div>
 				<button value="cancel" type="reset" on:click={() => formDialogOpen = false}>Cancel</button>
 				<button id="confirmBtn" value="default" type="submit" disabled={submitDisabled}>Add</button>
@@ -158,6 +161,12 @@
 				{/if}
 			</div>
 			<img class="product-qr-code" src="http://localhost:8000/images/{selectedProduct.sku}.png" alt="">
+			{#if selectedProduct.details}
+				<div class="product-more-details">
+					<h3>More details</h3>
+					<p>{@html selectedProduct.details.replace(/\r\n/g, '<br />')}</p>
+				</div>
+			{/if}
 		{/if}
 	</dialog>
 </section>
@@ -201,7 +210,8 @@
 		display: grid;
 		grid-template-areas:
 						"name name name"
-						"details details images";
+						"desc desc images"
+						"details details details";
 	}
 
 	.product-name {
@@ -209,7 +219,7 @@
 	}
 
 	.product-details {
-		grid-area: details;
+		grid-area: desc;
 	}
 
 	.close-dialog {
@@ -225,5 +235,9 @@
 
 	.close-dialog:hover path {
 		fill: var(--accent-color);
+	}
+
+	.product-more-details {
+		grid-area: details;
 	}
 </style>
