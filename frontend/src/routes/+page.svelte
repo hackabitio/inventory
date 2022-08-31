@@ -178,6 +178,9 @@
 					<strong>SKU:</strong> {selectedProduct.sku}
 				</p>
 				<p>
+					<strong>Category:</strong> {categoryName(selectedProduct.category)}
+				</p>
+				<p>
 					<strong>Quantity:</strong> {selectedProduct.qty}
 				</p>
 				<p>
