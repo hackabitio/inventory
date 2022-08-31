@@ -15,7 +15,6 @@ export const load = async () => {
       additions: await additions.json(),
       products: await products.json()
     }
-    // console.log(returnVal)
     return returnVal
   }
 

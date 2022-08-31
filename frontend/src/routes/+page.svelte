@@ -2,9 +2,11 @@
 	import { addProduct } from '$lib/form';
 
 	export let data
-	$: filteredProducts = Object.keys(data).map((key) => data[key])
+	let categories = Object.keys(data.categories).map((key) => data.categories[key])
+
+	$: filteredProducts = Object.keys(data.products).map((key) => data.products[key])
 	let formDialogOpen = false
-	let foundProducts = Object.keys(data).map((key) => data[key])
+	let foundProducts = Object.keys(data.products).map((key) => data.products[key])
 	let showNames = false
 	let filterSku
 	let filterName
@@ -17,17 +19,17 @@
 	$: submitDisabled = !addSku || !addName || !addQty || !addPrice
 
 	const filterBySku = async () => {
-		const products = Object.keys(data).map((key) => data[key])
+		const products = Object.keys(data.products).map((key) => data.products[key])
 		filteredProducts = filterSku ? products.filter(product => product.sku.indexOf(filterSku) > -1) : products
 	}
 
 	const filterByName = async () => {
-		const products = Object.keys(data).map((key) => data[key])
+		const products = Object.keys(data.products).map((key) => data.products[key])
 		filteredProducts = filterName ? products.filter(product => product.name.toLowerCase().indexOf(filterName.toLowerCase()) > -1) : products
 	}
 
 	const findProduct = async (e) => {
-		foundProducts = Object.keys(data).map((key) => data[key]).filter(product => product.name.toLowerCase().indexOf(addName.toLowerCase()) > -1)
+		foundProducts = Object.keys(data.products).map((key) => data.products[key]).filter(product => product.name.toLowerCase().indexOf(addName.toLowerCase()) > -1)
 		showNames = addName.length && foundProducts.length
 	}
 
@@ -53,6 +55,15 @@
 			return ' '
 		}
 	}
+
+	const categoryName = cat => {
+		if (cat) {
+			let category = categories.find(c => c.id === cat)
+			return category.name ?? '-'
+		} else {
+			return '-'
+		}
+	}
 </script>
 
 <svelte:head>
@@ -76,6 +87,17 @@
 						}}
 		>
 			<h1>Add more to stock</h1>
+			{#if categories.length}
+				<label>
+					Category
+					<select name="category" id="category">
+							<option value="" disabled selected>Please select a category</option>
+						{#each categories as category}
+							<option value="{category.id}">{category.name}</option>
+						{/each}
+					</select>
+				</label>
+			{/if}
 			<label>
 				Product name
 				<input autocomplete="off" type="text" id="addName" name="name" bind:value={addName} placeholder="Product name"  on:keyup={findProduct} />
@@ -129,7 +151,7 @@
 			<th>Name</th>
 			<th>Quantity</th>
 			<th>Order price</th>
-			<th>Inventory box</th>
+			<th>Category</th>
 			<th></th>
 		</tr>
 		{#each filteredProducts as product}
@@ -138,7 +160,7 @@
 				<td>{product.name || '-'}</td>
 				<td>{product.qty || '-'}</td>
 				<td>{product.orderPrice || '-'}</td>
-				<td>{product.inventoryBox || '-'}</td>
+				<td>{categoryName(product.category)}</td>
 				<td class="center-align">
 					<a href="#" on:click={() => selectedProduct = product}>View</a>
 				</td>
