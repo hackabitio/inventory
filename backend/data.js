@@ -103,7 +103,6 @@ export const addStock = async (ctx) => {
 
 export const deleteAddition = async (ctx) => {
   let id = ctx.query.id
-  console.log(id)
   if (!id) {
     ctx.body = 'The ID is required'
     ctx.status = 200
@@ -118,6 +117,37 @@ export const deleteAddition = async (ctx) => {
     if (theProduct) {
       theProduct = Array.isArray(theProduct) ? theProduct[0] : theProduct
       theProduct.additions = theProduct.additions.filter(addition => addition !== id)
+    }
+    await db.write()
+
+    ctx.body = {
+      msg: 'Products updated!',
+      id: id
+    }
+    ctx.status = 201
+  } else {
+    ctx.body = 'Nothing found'
+    ctx.status = 201
+  }
+
+}
+
+export const deleteDeduction = async (ctx) => {
+  let id = ctx.query.id
+  if (!id) {
+    ctx.body = 'The ID is required'
+    ctx.status = 200
+  }
+  // Get the product from available stock database stockDb
+  await db.read()
+
+  let theDeduction = db.data.deductions.filter(deduction => deduction.id === id)
+  db.data.deductions = db.data.deductions.filter(deduction => deduction.id !== id)
+  if (theDeduction.length) {
+    let theProduct = db.data.products.filter(product => theDeduction[0].sku === product.sku)
+    if (theProduct) {
+      theProduct = Array.isArray(theProduct) ? theProduct[0] : theProduct
+      theProduct.deductions = theProduct.deductions.filter(deduction => deduction !== id)
     }
     await db.write()
 
