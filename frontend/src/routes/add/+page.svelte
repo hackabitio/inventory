@@ -28,7 +28,7 @@
 		filteredProducts = data.products.filter(product => product.name.toLowerCase().indexOf(name.toLowerCase()) > -1)
 		showNames = name.length && filteredProducts.length
 	}
-	
+
 	const selectProduct = product => {
 		showNames = false
 		addSku = product.sku
