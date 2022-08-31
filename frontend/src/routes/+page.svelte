@@ -44,6 +44,15 @@
 			document.querySelector('form').reset();
 		}
 	}
+
+	const formatDate = t => {
+		if (t) {
+			let d = new Date(t)
+			return `${d.getDate()}-${d.getMonth()}-${d.getFullYear()}`
+		} else {
+			return '-'
+		}
+	}
 </script>
 
 <svelte:head>
@@ -178,7 +187,7 @@
 							{#each selectedProduct.additions as addition}
 								<li>
 									<div class="transaction-time">
-										{addition.time}
+										{formatDate(addition.time)}
 									</div>
 									<div class="transaction-qty">
 										{addition.qty}
@@ -203,13 +212,13 @@
 							{#each selectedProduct.deductions as deduction}
 								<li>
 									<div class="transaction-time">
-										{deduction.time}
+										{formatDate(deduction.time) || '-'}
 									</div>
 									<div class="transaction-qty">
-										{deduction.qty}
+										{deduction.qty || '-'}
 									</div>
 									<div class="transaction-price">
-										{deduction.orderPrice}
+										{deduction.orderPrice || '-'}
 									</div>
 								</li>
 							{/each}
