@@ -136,6 +136,9 @@
 		{/each}
 	</table>
 	<dialog class="product-details-dialog" open={selectedProduct !== null} on:close={() => selectedProduct = null} id="productDetails">
+		<svg on:click={() => selectedProduct = null} class="close-dialog" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path d="M17.4699 14.929C18.173 15.6321 18.173 16.771 17.4699 17.4741C17.1212 17.8256 16.6599 18 16.1987 18C15.7375 18 15.2774 17.8242 14.9265 17.4727L8.9993 11.5486L3.0727 17.4713C2.72116 17.8256 2.26051 18 1.79986 18C1.33921 18 0.879119 17.8256 0.527303 17.4713C-0.175768 16.7682 -0.175768 15.6292 0.527303 14.9262L6.45559 8.99789L0.527303 3.07242C-0.175768 2.36935 -0.175768 1.23037 0.527303 0.527303C1.23037 -0.175768 2.36935 -0.175768 3.07242 0.527303L8.9993 6.4584L14.9276 0.530115C15.6307 -0.172955 16.7696 -0.172955 17.4727 0.530115C18.1758 1.23319 18.1758 2.37216 17.4727 3.07523L11.5444 9.00351L17.4699 14.929Z" fill="black"/>
+		</svg>
 		{#if selectedProduct}
 			<h1 class="product-name">{selectedProduct.name}</h1>
 			<div class="product-details">
@@ -207,5 +210,20 @@
 
 	.product-details {
 		grid-area: details;
+	}
+
+	.close-dialog {
+		position: absolute;
+		right: 15px;
+		top: 15px;
+		cursor: pointer;
+	}
+
+	.close-dialog path {
+		fill: var(--text-color);
+	}
+
+	.close-dialog:hover path {
+		fill: var(--accent-color);
 	}
 </style>
