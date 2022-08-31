@@ -179,10 +179,10 @@ tr:first-child {
 
 .record-actions {
 	display: flex;
-	justify-content: space-around;
+	justify-content: space-evenly;
 
 	svg {
-		max-width: 20px;
+		max-width: 15px;
 	}
 }
 
