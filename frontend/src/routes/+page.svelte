@@ -28,6 +28,17 @@
 		filteredProducts = filterName ? products.filter(product => product.name.toLowerCase().indexOf(filterName.toLowerCase()) > -1) : products
 	}
 
+	const filterByCategory = async (e) => {
+		let filterCategory = e.target.value
+		const products = Object.keys(data.products).map((key) => data.products[key])
+		if (filterCategory == 0) {
+			console.log('All')
+			filteredProducts = products
+		} else {
+			filteredProducts = filterCategory ? products.filter(product => product.category === filterCategory) : products
+		}
+	}
+
 	const findProduct = async (e) => {
 		foundProducts = Object.keys(data.products).map((key) => data.products[key]).filter(product => product.name.toLowerCase().indexOf(addName.toLowerCase()) > -1)
 		showNames = addName.length && foundProducts.length
@@ -144,6 +155,15 @@
 
 	<input name="text" autocomplete="off" bind:value="{filterSku}" on:keyup={filterBySku} placeholder="SKU" />
 	<input name="text" autocomplete="off" bind:value="{filterName}" on:keyup={filterByName} placeholder="Product name" />
+	{#if categories.length}
+			Category
+			<select on:change={filterByCategory} name="category" id="categoryFilter">
+				<option value="0">All</option>
+				{#each categories as category}
+					<option value="{category.id}">{category.name}</option>
+				{/each}
+			</select>
+	{/if}
 
 	<table>
 		<tr class="table-header">
