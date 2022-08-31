@@ -68,7 +68,7 @@ button {
 	font-family: inherit;
 }
 
-button {
+button:not(.icon-button) {
 	background-color: var(--accent-color);
 	border: none;
 	padding: 10px 30px;
@@ -78,20 +78,37 @@ button {
 	cursor: pointer;
 }
 
-button:hover {
+button:not(.icon-button):hover {
 	background-color: #ec5438;
 	box-shadow: 3px 3px 2px rgb(0 0 0 / 10%);
 }
 
-button:disabled,
-button[disabled] {
+button:not(.icon-button):disabled,
+button:not(.icon-button)[disabled] {
 	background-color: #cccccc;
 	color: #666666;
 	cursor: not-allowed;
 }
 
-button:focus:not(:focus-visible) {
+button:not(.icon-button):focus:not(:focus-visible) {
 	outline: none;
+}
+
+.icon-button {
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
+}
+
+.icon-button:disabled,
+.icon-button[disabled] {
+	fill: #cccccc !important;
+	cursor: not-allowed;
+}
+
+.icon-button:disabled svg path,
+.icon-button[disabled] svg path {
+	fill: #cccccc !important;
 }
 
 @media (min-width: 720px) {
@@ -145,4 +162,17 @@ tr:nth-child(2n-1) {
 
 .products-autocomplete ul li:hover {
 	background-color: var(--secondary-color);
+}
+
+.record-actions {
+	display: flex;
+	justify-content: space-around;
+}
+
+.record-actions svg {
+	max-width: 20px;
+}
+
+.record-actions svg:hover path {
+	fill: var(--accent-color);
 }

@@ -54,12 +54,18 @@ export function enhance(form, { pending, error, result } = {}) {
 export function addToStock(form, { pending, error, result } = {}) {
 
 	async function handle_submit(event) {
-		// event.preventDefault();
-
 		const data = new FormData(form);
 		if (pending) pending({ data, form });
 
 		try {
+			if (form.method !== 'dialog') {
+				event.preventDefault()
+			}
+			if (form.action.toLowerCase().indexOf('delete') > -1) {
+				if (!confirm("Are you sure you want to remove this record?")) {
+					return
+				}
+			}
 			let formMethod = form.method === 'dialog' ? 'POST' : form.method
 
 			const response = await fetch(form.action, {
