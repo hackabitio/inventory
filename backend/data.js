@@ -55,7 +55,6 @@ export const addProduct = async (ctx) => {
 
 export const addCategory = async (ctx) => {
   let category = ctx.request.body.category
-  console.log(category)
   category.id = uuidv4()
   await db.read()
   db.data = db.data || { categories: [] }
@@ -363,7 +362,6 @@ export const getCategories = async (ctx) => {
 
 }
 
-
 export const deleteCategory = async (ctx) => {
   let id = ctx.query.id
   if (!id) {
@@ -387,5 +385,24 @@ export const deleteCategory = async (ctx) => {
     ctx.body = 'Nothing found'
     ctx.status = 200
   }
+}
 
+export const updateCategory = async (ctx) => {
+  let category = ctx.request.body.category
+  await db.read()
+  db.data = db.data || { categories: [] }
+  const { categories } = db.data
+  let findCategory = categories.find(c => c.id === category.id)
+  if (!findCategory) {
+    ctx.body = 'Category not found'
+    ctx.status = 200
+  } else {
+    findCategory.name = category.name
+    await db.write()
+    ctx.body = {
+      msg: 'Category updated',
+      ids: category.id
+    }
+    ctx.status = 200
+  }
 }

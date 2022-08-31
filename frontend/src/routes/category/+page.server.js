@@ -37,3 +37,14 @@ export const DELETE = async ({ request }) => {
     await api('DELETE', `delete-category?id=${id}`)
   }
 }
+
+export const PATCH = async ({ request, locals }) => {
+  const form = await request.formData();
+
+  await api('PATCH', `update-category`, {
+    category: {
+      id: form.get('newId'),
+      name: form.get('newName')
+    }
+  });
+};
