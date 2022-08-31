@@ -61,7 +61,7 @@
 			let category = categories.find(c => c.id === cat)
 			return category.name ?? '-'
 		} else {
-			return '-'
+			return ''
 		}
 	}
 </script>
