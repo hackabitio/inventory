@@ -21,7 +21,7 @@ export const load = async () => {
   throw error(deductions.status)
 }
 
-export const POST = async ({ request, locals }) => {
+export const POST = async ({ request }) => {
   const form = await request.formData()
   const submittedData = {};
   for (let field of form) {
