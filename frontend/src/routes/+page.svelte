@@ -50,7 +50,7 @@
 			let d = new Date(t)
 			return `${d.getDate()}-${d.getMonth()}-${d.getFullYear()}`
 		} else {
-			return '-'
+			return ' '
 		}
 	}
 </script>
@@ -134,11 +134,11 @@
 		</tr>
 		{#each filteredProducts as product}
 			<tr>
-				<td>{product.sku}</td>
-				<td>{product.name}</td>
-				<td>{product.qty}</td>
-				<td>{product.orderPrice}</td>
-				<td>{product.inventoryBox || ''}</td>
+				<td>{product.sku || '-'}</td>
+				<td>{product.name || '-'}</td>
+				<td>{product.qty || '-'}</td>
+				<td>{product.orderPrice || '-'}</td>
+				<td>{product.inventoryBox || '-'}</td>
 				<td class="center-align">
 					<a href="#" on:click={() => selectedProduct = product}>View</a>
 				</td>

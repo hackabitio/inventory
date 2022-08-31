@@ -1,29 +1,20 @@
 import { invalidate } from '$app/navigation';
 
-// this action (https://svelte.dev/tutorial/actions) allows us to
-// progressively enhance a <form> that already works without JS
 export function enhance(form, { pending, error, result } = {}) {
-	let current_token;
-
 	async function handle_submit(event) {
-		const token = (current_token = {});
+		// event.preventDefault()
 
-		event.preventDefault();
-
-		const data = new FormData(form);
-
-		if (pending) pending({ data, form });
+		const data = new FormData(form)
 
 		try {
+			let formMethod = form.method === 'dialog' ? 'POST' : form.method
 			const response = await fetch(form.action, {
-				method: form.method,
+				method: formMethod,
 				headers: {
 					accept: 'application/json'
 				},
 				body: data
 			});
-
-			if (token !== current_token) return;
 
 			if (response.ok) {
 				if (result) result({ data, form, response });

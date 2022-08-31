@@ -12,7 +12,7 @@ await db.read()
 
 export const createDb = async (ctx) => {
   await db.read()
-  db.data = db.data || { products: [], additions: [], deductions: [] }
+  db.data = db.data || { categories: [], products: [], additions: [], deductions: [] }
   await db.write()
   ctx.body = 'Database created'
   ctx.status = 201
@@ -51,6 +51,28 @@ export const addProduct = async (ctx) => {
     ctx.status = 201
   }
 
+}
+
+export const addCategory = async (ctx) => {
+  let category = ctx.request.body.category
+  console.log(category)
+  category.id = uuidv4()
+  await db.read()
+  db.data = db.data || { categories: [] }
+  const { categories } = db.data
+  let existingCategories = categories.find(c => c.name === category.name)
+  if (existingCategories) {
+    ctx.body = 'Category already exists'
+    ctx.status = 200
+  } else {
+    categories.push(category)
+    await db.write()
+    ctx.body = {
+      msg: 'Category added',
+      ids: category.id
+    }
+    ctx.status = 200
+  }
 }
 
 export const addStock = async (ctx) => {
@@ -322,4 +344,21 @@ export const getProduct = async (ctx) => {
       ctx.status = 200
     }
   }
+}
+
+export const getCategories = async (ctx) => {
+  await db.read()
+  db.data = db.data || { categories: [] }
+  const { categories } = db.data
+
+  if (categories) {
+    ctx.body = categories
+    ctx.status = 200
+  } else {
+    ctx.body = {
+      msg: 'Sorry, no category found',
+    }
+    ctx.status = 200
+  }
+
 }
