@@ -9,6 +9,7 @@
 	--secondary-color: #d0dde9;
 	--tertiary-color: #edf0f8;
 	--accent-color: tomato;
+	--accent-color-light: #e89f90;
 	--heading-color: rgba(0, 0, 0, 0.7);
 	--text-color: #444444;
 	--background-without-opacity: rgba(255, 255, 255, 0.7);
@@ -141,6 +142,10 @@ tr:nth-child(2n-1) {
 
 tr:hover:not(:first-child) {
 	background-color: var(--primary-color);
+}
+
+tr:first-child {
+	background: linear-gradient(var(--primary-color), var(--secondary-color), var(--primary-color));
 }
 
 .products-autocomplete {
