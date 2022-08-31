@@ -28,17 +28,7 @@
 		filteredProducts = data.products.filter(product => product.name.toLowerCase().indexOf(name.toLowerCase()) > -1)
 		showNames = name.length && filteredProducts.length
 	}
-
-	const deleteAddition = async (id) => {
-		console.log(id)
-		await fetch(`/add?id=${id}`, {
-			method: 'DELETE',
-			headers: {
-				accept: 'application/json'
-			}
-		});
-	}
-
+	
 	const selectProduct = product => {
 		showNames = false
 		addSku = product.sku
