@@ -256,11 +256,24 @@ export const getDeductions = async (ctx) => {
 }
 
 export const getProducts = async (ctx) => {
+  let withDetails = ctx.query.details
   await db.read()
   db.data = db.data || { products: [] }
   const { products } = db.data
 
   if (products) {
+    if (withDetails) {
+      products.forEach(product => {
+        if(product.additions.length) {
+          const { additions } = db.data
+          product.additions = additions.filter(addition => product.additions.includes(addition.id))
+        }
+        if(product.deductions.length) {
+          const { deductions } = db.data
+          product.deductions = deductions.filter(deduction => product.deductions.includes(deduction.id))
+        }
+      })
+    }
     ctx.body = products
     ctx.status = 200
   } else {
@@ -274,6 +287,7 @@ export const getProducts = async (ctx) => {
 
 export const getProduct = async (ctx) => {
   let sku = ctx.query.sku
+  let withDetails = ctx.query.details
   if (typeof sku === 'undefined') {
     ctx.body = 'product SKU is required'
     ctx.status = 201
@@ -288,6 +302,16 @@ export const getProduct = async (ctx) => {
     if (product) {
       if (Array.isArray(product)) {
         product = product[0]
+      }
+      if (withDetails) {
+        if(product.additions.length) {
+          const { additions } = db.data
+          product.additions = additions.filter(addition => product.additions.includes(addition.id))
+        }
+        if(product.deductions.length) {
+          const { deductions } = db.data
+          product.deductions = deductions.filter(deduction => product.deductions.includes(deduction.id))
+        }
       }
       ctx.body = product
       ctx.status = 200

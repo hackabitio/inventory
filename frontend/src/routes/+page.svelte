@@ -27,7 +27,6 @@
 	}
 
 	const findProduct = async (e) => {
-
 		foundProducts = Object.keys(data).map((key) => data[key]).filter(product => product.name.toLowerCase().indexOf(addName.toLowerCase()) > -1)
 		showNames = addName.length && foundProducts.length
 	}
@@ -133,7 +132,6 @@
 				<td>{product.inventoryBox || ''}</td>
 				<td class="center-align">
 					<a href="#" on:click={() => selectedProduct = product}>View</a>
-<!--					<img class="product-qr-code" src="http://localhost:8000/images/{product.sku}.png" alt="">-->
 				</td>
 			</tr>
 		{/each}
@@ -167,11 +165,63 @@
 					<p>{@html selectedProduct.details.replace(/\r\n/g, '<br />')}</p>
 				</div>
 			{/if}
+			<div class="product-transactions">
+				{#if selectedProduct.additions.length}
+					<div class="product-additions">
+						<h4>Product additions</h4>
+						<ul>
+							<li>
+								<h4 class="transaction-time">Time</h4>
+								<h4 class="transaction-qty">Quantity</h4>
+								<h4 class="transaction-price">Price</h4>
+							</li>
+							{#each selectedProduct.additions as addition}
+								<li>
+									<div class="transaction-time">
+										{addition.time}
+									</div>
+									<div class="transaction-qty">
+										{addition.qty}
+									</div>
+									<div class="transaction-price">
+										{addition.orderPrice}
+									</div>
+								</li>
+							{/each}
+						</ul>
+					</div>
+				{/if}
+				{#if selectedProduct.deductions.length}
+					<div class="product-deductions">
+						<h4>Product deductions</h4>
+						<ul>
+							<li>
+								<h4 class="transaction-time">Time</h4>
+								<h4 class="transaction-qty">Quantity</h4>
+								<h4 class="transaction-price">Price</h4>
+							</li>
+							{#each selectedProduct.deductions as deduction}
+								<li>
+									<div class="transaction-time">
+										{deduction.time}
+									</div>
+									<div class="transaction-qty">
+										{deduction.qty}
+									</div>
+									<div class="transaction-price">
+										{deduction.orderPrice}
+									</div>
+								</li>
+							{/each}
+						</ul>
+					</div>
+				{/if}
+			</div>
 		{/if}
 	</dialog>
 </section>
 
-<style>
+<style lang="scss">
 	h1 {
 		width: 100%;
 	}
@@ -211,7 +261,8 @@
 		grid-template-areas:
 						"name name name"
 						"desc desc images"
-						"details details details";
+						"details details details"
+						"transactions transactions transactions";
 	}
 
 	.product-name {
@@ -239,5 +290,31 @@
 
 	.product-more-details {
 		grid-area: details;
+	}
+
+	.product-transactions {
+		grid-area: transactions;
+
+		.product-additions,
+		.product-deductions {
+
+			> h4 {
+				margin-bottom: 0;
+			}
+		}
+		.product-deductions {
+			margin-top: 40px;
+
+			h4 {
+				margin-top: 10px;
+			}
+		}
+
+		li {
+			h4 {
+				margin-top: 0;
+				margin-bottom: 10px;
+			}
+		}
 	}
 </style>

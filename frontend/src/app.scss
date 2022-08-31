@@ -175,12 +175,25 @@ tr:hover:not(:first-child) {
 .record-actions {
 	display: flex;
 	justify-content: space-around;
+
+	svg {
+		max-width: 20px;
+	}
 }
 
-.record-actions svg {
-	max-width: 20px;
-}
 
 .record-actions svg:hover path {
 	fill: var(--accent-color);
+}
+
+.product-transactions {
+
+	ul {
+		list-style: none;
+
+		li {
+			display: grid;
+			grid-template-columns: 2fr 1fr 1fr;
+		}
+	}
 }

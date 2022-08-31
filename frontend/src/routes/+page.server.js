@@ -2,7 +2,7 @@ import {error} from "@sveltejs/kit"
 import { api } from './api'
 
 export const load = async () => {
-  const response = await api('GET', 'products')
+  const response = await api('GET', 'products?details=true')
 
   if (response.status === 404) {
     return {

@@ -30,7 +30,6 @@ router.get("/products", getProducts)
 router.get("/product", getProduct)
 router.get('/images/:image', async ctx => {
   const { image } = ctx.params
-  console.log('Image: ', typeof image, image)
   await koaSend(ctx, `images/${image}`);
 })
 
