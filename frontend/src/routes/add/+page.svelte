@@ -17,6 +17,7 @@
 	let addPrice
 	let submitDisabled
 	$: submitDisabled = !addSku || !addName || !addQty || !addPrice
+	let currentFocus
 
 	const filterBySku = async () => {
 		filteredAdditions = filterSku ? data.additions.filter(product => product.sku.toLowerCase().indexOf(filterSku.toLowerCase()) > -1) : data.additions
@@ -30,6 +31,35 @@
 		let name = e.target.value
 		filteredProducts = data.products.filter(product => product.name.toLowerCase().indexOf(name.toLowerCase()) > -1)
 		showNames = name.length && filteredProducts.length
+		if (showNames) {
+			let autoSuggest = document.querySelectorAll('.products-autocomplete ul li')
+			if (e.key === 'ArrowDown') {
+				currentFocus++
+				setActive(autoSuggest)
+			} else if (e.key === 'ArrowUp') {
+				currentFocus--
+				setActive(autoSuggest)
+			} else if (currentFocus > -1 && e.key === 'Enter') {
+				selectProduct(filteredProducts[currentFocus])
+			} else {
+				currentFocus = -1
+			}
+		}
+	}
+
+	const setActive = x => {
+		if (!x) return false
+		removeActive(x)
+		if (currentFocus >= x.length) currentFocus = 0
+		if (currentFocus < 0) currentFocus = (x.length - 1)
+		x[currentFocus].classList.add("in-focus")
+		x[currentFocus].focus()
+	}
+
+	const removeActive = x => {
+		for (let i = 0; i < x.length; i++) {
+			x[i].classList.remove("in-focus")
+		}
 	}
 
 	const selectProduct = product => {

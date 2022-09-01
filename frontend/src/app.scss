@@ -180,6 +180,7 @@ tr:first-child {
 	font-size: 16px;
 }
 
+.products-autocomplete ul li.in-focus,
 .products-autocomplete ul li:hover {
 	background-color: var(--secondary-color);
 }
