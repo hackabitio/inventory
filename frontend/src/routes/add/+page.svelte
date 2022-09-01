@@ -160,11 +160,6 @@
 </div>
 
 <style lang="scss">
-	dialog {
-		min-width: 40vw;
-		box-shadow: 0 0 0 100vw rgb(0 0 0 / .7);
-	}
-
 	.add-to-stock {
 		display: flex;
 		flex-direction: column;

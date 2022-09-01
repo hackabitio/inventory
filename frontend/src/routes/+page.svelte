@@ -281,11 +281,6 @@
 		width: 100%;
 	}
 
-	dialog {
-		min-width: 40vw;
-		box-shadow: 0 0 0 100vw rgb(0 0 0 / .7);
-	}
-
 	.add-new-product {
 		display: flex;
 		flex-direction: column;
