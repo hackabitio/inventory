@@ -11,6 +11,7 @@
   let filterName
   let addSku
   let addName
+  let nameInput
   let addQty
   let addPrice
   let submitDisabled
@@ -47,6 +48,14 @@
 
   let formDialogOpen = false
 
+
+  const openDialog = e => {
+    formDialogOpen = true
+    setTimeout(() => {
+      nameInput.focus()
+    }, 100)
+  }
+
   const closeDialog = e => {
     if (e.key === 'Escape') {
       formDialogOpen = false
@@ -78,7 +87,7 @@
       <h1>Remove from stock</h1>
       <label>
         Product name
-        <input autocomplete="off" type="text" id="addName" name="name" bind:value={addName} placeholder="Product name" on:keyup={findProduct} />
+        <input bind:this={nameInput} autocomplete="off" type="text" id="addName" name="name" bind:value={addName} placeholder="Product name" on:keyup={findProduct} />
         {#if showNames}
           <div class="products-found">
             <ul>
@@ -111,7 +120,7 @@
     </form>
   </dialog>
   <p>
-    <button id="addToStock" on:click={() => formDialogOpen = true}>Deduct stock</button>
+    <button id="addToStock" on:click={openDialog}>Deduct stock</button>
   </p>
 
   <h2>Filter by:</h2>

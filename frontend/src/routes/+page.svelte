@@ -11,6 +11,7 @@
 	let showNames = false
 	let filterSku
 	let filterName
+	let categorySelect
 	let addSku
 	let addName
 	let addQty
@@ -49,6 +50,14 @@
 		showNames = false
 		addSku = product.sku
 		addName = product.name
+	}
+
+
+	const openDialog = e => {
+		formDialogOpen = true
+		setTimeout(() => {
+			categorySelect.focus()
+		}, 100)
 	}
 
 	const closeDialog = e => {
@@ -93,7 +102,7 @@
 			{#if categories.length}
 				<label>
 					Category
-					<select name="category" id="category">
+					<select bind:this={categorySelect} name="category" id="category">
 							<option value="" disabled selected>Please select a category</option>
 						{#each categories as category}
 							<option value="{category.id}">{category.name}</option>
@@ -140,7 +149,7 @@
 		</form>
 	</dialog>
 	<p>
-		<button id="addToStock" on:click={() => formDialogOpen = true}>Add stock</button>
+		<button id="addToStock" on:click={openDialog}>Add stock</button>
 	</p>
 
 	<h2>Filter by:</h2>
