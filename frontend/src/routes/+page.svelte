@@ -1,5 +1,6 @@
 <script>
-	import { addProduct } from '$lib/form';
+	import { addProduct } from '$lib/form'
+	import { formatDate } from '$lib/functions'
 
 	export let data
 	let categories = Object.keys(data.categories).map((key) => data.categories[key])
@@ -55,15 +56,6 @@
 			formDialogOpen = false
 			selectedProduct = null
 			document.querySelector('form').reset();
-		}
-	}
-
-	const formatDate = t => {
-		if (t) {
-			let d = new Date(t)
-			return `${d.getDate()}-${d.getMonth()}-${d.getFullYear()}`
-		} else {
-			return ' '
 		}
 	}
 

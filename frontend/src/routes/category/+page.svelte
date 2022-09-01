@@ -6,6 +6,7 @@
 
 	let showNames = false
 	let addName
+	let categoryNameInput
 	let selectedCategory = null
 	let submitDisabled
 	let uniqueNotice = false
@@ -21,6 +22,13 @@
 	}
 
 	let formDialogOpen = false
+
+	const openDialog = e => {
+		formDialogOpen = true
+		setTimeout(() => {
+			categoryNameInput.focus()
+		}, 100)
+	}
 
 	const closeDialog = e => {
 		if (e.key === 'Escape') {
@@ -54,7 +62,7 @@
 			<h1>Add new category</h1>
 			<label>
 				Category name
-				<input autocomplete="off" type="text" id="addName" name="name" bind:value={addName} placeholder="Category name" on:keyup={findCategory} />
+				<input bind:this={categoryNameInput} autocomplete="off" type="text" id="addName" name="name" bind:value={addName} placeholder="Category name" on:keyup={findCategory} />
 			</label>
 			<div>
 				<button value="cancel" type="reset" on:click={() => formDialogOpen = false}>Cancel</button>
@@ -64,7 +72,7 @@
 		</form>
 	</dialog>
 	<p>
-		<button id="addToStock" on:click={() => formDialogOpen = true}>Add category</button>
+		<button id="addToStock" on:click={openDialog}>Add category</button>
 	</p>
 
 	<table>

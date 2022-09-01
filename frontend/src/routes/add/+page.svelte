@@ -1,5 +1,7 @@
 <script>
-	import { addToStock } from '$lib/form';
+	import { addToStock } from '$lib/form'
+	import { formatDate } from '$lib/functions'
+
 	export let data
 	let showNames = false
 
@@ -124,7 +126,7 @@
 				<td>{product.name}</td>
 				<td>{product.qty}</td>
 				<td>{product.orderPrice}</td>
-				<td>{product.time}</td>
+				<td>{formatDate(product.time)}</td>
 				<td class="record-actions">
 					<form
 						action="/add?_method=DELETE"
