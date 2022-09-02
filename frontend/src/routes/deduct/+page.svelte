@@ -117,7 +117,7 @@
       <h1>Remove from stock</h1>
       <label>
         Product name
-        <input bind:this={nameInput} autocomplete="off" type="text" id="addName" name="name" bind:value={addName} placeholder="Product name" on:keyup={findProduct}  on:blur={() => showNames = false} />
+        <input bind:this={nameInput} autocomplete="off" type="text" id="addName" name="name" bind:value={addName} placeholder="Product name" on:input={findProduct}  on:blur={() => showNames = false} />
         {#if showNames}
           <div class="products-autocomplete">
             <ul>

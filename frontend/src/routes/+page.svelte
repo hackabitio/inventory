@@ -142,7 +142,7 @@
 			{/if}
 			<label>
 				Product name
-				<input autocomplete="off" type="text" id="addName" name="name" bind:value={addName} placeholder="Product name"  on:keyup={findProduct} on:blur={() => showNames = false} />
+				<input autocomplete="off" type="text" id="addName" name="name" bind:value={addName} placeholder="Product name"  on:input={findProduct} on:blur={() => showNames = false} />
 				{#if showNames}
 					<div class="products-autocomplete">
 						<ul>
