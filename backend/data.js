@@ -356,8 +356,8 @@ export const deleteProduct = async (ctx) => {
   let theProduct = db.data.products.find(product => product.id === id)
   if (theProduct) {
     db.data.products = db.data.products.filter(product => product.id !== id)
-    db.additions = db.data.additions.filter(addition => !theProduct.additions.includes(addition.id))
-    db.deductions = db.data.deductions.filter(deduction => !theProduct.deductions.includes(deduction.id))
+    db.data.additions = db.data.additions.filter(addition => !theProduct.additions.includes(addition.id))
+    db.data.deductions = db.data.deductions.filter(deduction => !theProduct.deductions.includes(deduction.id))
     await db.write()
 
     ctx.body = {
