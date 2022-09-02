@@ -20,36 +20,63 @@ export const createDb = async (ctx) => {
 
 export const addProduct = async (ctx) => {
   let product = ctx.request.body.product
-  product.id = uuidv4()
-  product.additions = []
-  product.deductions = []
-  let sku = product.sku
-  if (sku) {
-    sku = sku.toLowerCase().replace(/\s/g, '-')
-    generateQr(sku)
-  } else {
-    sku = product.name.toLowerCase().replace(/\s/g, '-')
-  }
   await db.read()
   db.data = db.data || { products: [] }
   const { products } = db.data
-  let existingProduct = products.find((p) => p.sku === sku)
-  if (existingProduct) {
-    ctx.body = {
-      msg: 'Product already exists',
-      ids: existingProduct.id
-    }
-    ctx.status = 201
-  } else {
-    products.push(product)
+  let updateIt = (product.productId && product.editOrNew)
+  product.id = updateIt ? product.productId : uuidv4()
+
+  delete product.productId
+  delete product.editOrNew
+
+  if (updateIt) {
+    let existingProduct = products.find((p) => p.id === product.id)
+    existingProduct.details = product.details
+    existingProduct.category = product.category
+    existingProduct.name = product.name
+    existingProduct.sku = product.sku
+    existingProduct.qty = product.qty
+    existingProduct.orderPrice = product.orderPrice
+    existingProduct.id = product.id
     await db.write()
 
     ctx.body = {
-      msg: 'Products added',
+      msg: 'Products Updated',
       ids: product.id
     }
-    ctx.status = 201
+    ctx.status = 200
+  } else {
+    product.additions = []
+    product.deductions = []
+    let sku = product.sku
+    if (sku) {
+      sku = sku.toLowerCase().replace(/\s/g, '-')
+      generateQr(sku)
+    } else {
+      sku = product.name.toLowerCase().replace(/\s/g, '-')
+    }
+
+    let existingProduct = products.find((p) => p.sku === sku)
+    if (existingProduct) {
+      ctx.body = {
+        msg: 'Product with same SKU already exists',
+        ids: existingProduct.id
+      }
+      ctx.status = 201
+    } else {
+      products.push(product)
+      await db.write()
+
+      ctx.body = {
+        msg: 'Products added',
+        ids: product.id
+      }
+      ctx.status = 200
+    }
   }
+
+  ctx.body = 'Something went wrong'
+  ctx.status = 200
 
 }
 

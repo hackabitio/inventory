@@ -12,10 +12,13 @@
 	let filterSku
 	let filterName
 	let categorySelect
+	let addID
 	let addSku
 	let addName
 	let addQty
 	let addPrice
+	let addDetails = null
+	let addCategory
 	let submitDisabled
 	let selectedProduct = null
 	$: submitDisabled = !addSku || !addName || !addQty || !addPrice
@@ -82,6 +85,16 @@
 		addName = product.name
 	}
 
+	const editProduct = product => {
+		openDialog()
+		addID = product.id
+		addSku = product.sku
+		addName = product.name
+		addQty = product.qty
+		addPrice = product.orderPrice
+		addDetails = product.details
+		addCategory = product.category
+	}
 
 	const openDialog = e => {
 		formDialogOpen = true
@@ -94,7 +107,14 @@
 		if (e.key === 'Escape') {
 			formDialogOpen = false
 			selectedProduct = null
-			document.querySelector('form').reset();
+			document.querySelector('form').reset()
+			addID = null
+			addSku = null
+			addName = null
+			addQty = null
+			addPrice = null
+			addDetails = null
+			addCategory = null
 		}
 	}
 
@@ -129,13 +149,19 @@
 						}}
 		>
 			<h1>Add more to stock</h1>
+			<input type="hidden" name="productId" bind:value={addID}>
+			<input type="hidden" name="editOrNew" bind:value={addID}>
 			{#if categories.length}
 				<label>
 					Category
 					<select bind:this={categorySelect} name="category" id="category">
 							<option value="" disabled selected>Please select a category</option>
 						{#each categories as category}
-							<option value="{category.id}">{category.name}</option>
+							{#if addCategory === category.id}
+								<option value="{category.id}" selected>{category.name}</option>
+							{:else}
+								<option value="{category.id}">{category.name}</option>
+							{/if}
 						{/each}
 					</select>
 				</label>
@@ -170,7 +196,7 @@
 			</label>
 			<label>
 				More details
-				<textarea name="details" id="moreDetails" cols="30" rows="10"></textarea>
+				<textarea name="details" id="moreDetails" cols="30" rows="10">{addDetails}</textarea>
 			</label>
 			<div>
 				<button value="cancel" type="reset" on:click={() => formDialogOpen = false}>Cancel</button>
@@ -203,7 +229,7 @@
 			<th>Quantity</th>
 			<th>Order price</th>
 			<th>Category</th>
-			<th></th>
+			<th>Actions</th>
 		</tr>
 		{#each filteredProducts as product}
 			<tr>
@@ -235,6 +261,11 @@
 							</svg>
 						</button>
 					</form>
+					<button class="icon-button" aria-label="Edit product" on:click={() => editProduct(product)} >
+						<svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M13.474 0.696554C14.4028 -0.232185 15.911 -0.232185 16.8398 0.696554L18.3035 2.16148C19.2322 3.08992 19.2322 4.59683 18.3035 5.52564L16.5054 7.32383L11.676 2.49474L13.474 0.696554ZM15.6659 8.16347L7.00263 16.8237C6.61628 17.2101 6.13706 17.4962 5.61325 17.6485L1.14308 18.9637C0.830278 19.0566 0.491848 18.9711 0.261151 18.7074C0.0304466 18.5105 -0.0558067 18.1724 0.0362493 17.8566L1.35111 13.3871C1.50565 12.8633 1.7891 12.384 2.17583 11.9976L10.8364 3.33513L15.6659 8.16347Z" fill="black"/>
+						</svg>
+					</button>
 				</td>
 			</tr>
 		{/each}
