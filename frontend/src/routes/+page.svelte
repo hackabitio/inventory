@@ -1,5 +1,5 @@
 <script>
-	import { addProduct } from '$lib/form'
+	import { enhance } from '$lib/form'
 	import { formatDate } from '$lib/functions'
 
 	export let data
@@ -122,7 +122,7 @@
 						class="add-new-product"
 						method="dialog"
 						action="/"
-						use:addProduct={{
+						use:enhance={{
 							result: async ({ form }) => {
 								form.reset();
 							}
@@ -219,9 +219,9 @@
 						</svg>
 					</button>
 					<form
-						action="/add?_method=DELETE"
+						action="/?_method=DELETE"
 						method="post"
-						use:addProduct={{
+						use:enhance={{
 							pending: () => {
 								product.pending_delete = true
 								setTimeout(()=>{ product.pending_delete = false }, 3000)

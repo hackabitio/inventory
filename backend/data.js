@@ -345,6 +345,32 @@ export const getProduct = async (ctx) => {
   }
 }
 
+export const deleteProduct = async (ctx) => {
+  let id = ctx.query.id
+  if (!id) {
+    ctx.body = 'The ID is required'
+    ctx.status = 200
+  }
+  await db.read()
+
+  let theProduct = db.data.products.find(product => product.id === id)
+  if (theProduct) {
+    db.data.products = db.data.products.filter(product => product.id !== id)
+    db.additions = db.data.additions.filter(addition => !theProduct.additions.includes(addition.id))
+    db.deductions = db.data.deductions.filter(deduction => !theProduct.deductions.includes(deduction.id))
+    await db.write()
+
+    ctx.body = {
+      msg: 'Products updated!',
+      id: id
+    }
+    ctx.status = 201
+  } else {
+    ctx.body = 'Nothing found'
+    ctx.status = 201
+  }
+}
+
 export const getCategories = async (ctx) => {
   await db.read()
   db.data = db.data || { categories: [] }

@@ -33,3 +33,11 @@ export const POST = async ({ request }) => {
     product: submittedData
   })
 }
+
+export const DELETE = async ({ request }) => {
+  const form = await request.formData()
+  const id = form.get('id')
+  if (id) {
+    await api('DELETE', `delete-product?id=${id}`)
+  }
+}
