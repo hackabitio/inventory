@@ -81,40 +81,47 @@ button:not(.icon-button) {
 	color: #FFF;
 	box-shadow: 2px 2px 2px rgb(0 0 0 / 10%);
 	cursor: pointer;
-}
 
-button:not(.icon-button):hover {
-	background-color: #ec5438;
-	box-shadow: 3px 3px 2px rgb(0 0 0 / 10%);
-}
+	&:hover {
+		background-color: #ec5438;
+		box-shadow: 3px 3px 2px rgb(0 0 0 / 10%);
+	}
 
-button:not(.icon-button):disabled,
-button:not(.icon-button)[disabled] {
-	background-color: #cccccc;
-	color: #666666;
-	cursor: not-allowed;
-}
+	&:disabled,
+	&[disabled] {
+		background-color: #cccccc;
+		color: #666666;
+		cursor: not-allowed;
+	}
 
-button:not(.icon-button):focus:not(:focus-visible) {
-	outline: none;
+	&:focus:not(:focus-visible) {
+		outline: none;
+	}
 }
 
 .icon-button {
 	background-color: transparent;
 	border: none;
 	cursor: pointer;
+
+	&:disabled,
+	&[disabled] {
+		fill: #cccccc !important;
+		cursor: not-allowed;
+
+		svg path {
+			fill: #cccccc !important;
+		}
+	}
+
+	&:hover {
+		svg path {
+			fill: var(--accent-color);
+		}
+	}
 }
 
-.icon-button:disabled,
-.icon-button[disabled] {
-	fill: #cccccc !important;
-	cursor: not-allowed;
-}
 
-.icon-button:disabled svg path,
-.icon-button[disabled] svg path {
-	fill: #cccccc !important;
-}
 
 @media (min-width: 720px) {
 	h1 {
@@ -192,11 +199,6 @@ tr:first-child {
 	svg {
 		max-width: 15px;
 	}
-}
-
-
-.record-actions svg:hover path {
-	fill: var(--accent-color);
 }
 
 .product-transactions {
