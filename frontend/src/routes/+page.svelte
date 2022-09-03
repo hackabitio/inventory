@@ -381,6 +381,7 @@
 		grid-area: images;
 		display: block;
 		margin-inline: auto;
+		max-width: 180px;
 	}
 
 	.product-details-dialog {
@@ -399,10 +400,16 @@
 
 	.product-name {
 		grid-area: name;
+		margin-bottom: 20px;
 	}
 
 	.product-details {
 		grid-area: desc;
+
+		p {
+			margin-top: 0;
+			margin-bottom: 5px;
+		}
 	}
 
 	.close-dialog {
@@ -422,6 +429,11 @@
 
 	.product-more-details {
 		grid-area: details;
+
+		h3 {
+			margin-top: 10px;
+			margin-bottom: 0;
+		}
 	}
 
 	.product-transactions {
