@@ -86,7 +86,7 @@ export const addCategory = async (ctx) => {
   await db.read()
   db.data = db.data || { categories: [] }
   const { categories } = db.data
-  let existingCategories = categories.find(c => c.name === category.name)
+  let existingCategories = categories && categories.find(c => c.name === category.name)
   if (existingCategories) {
     ctx.body = 'Category already exists'
     ctx.status = 200
@@ -406,7 +406,7 @@ export const getCategories = async (ctx) => {
   if (categories) {
     const { products } = db.data
     categories.forEach(category => {
-      category.products = products.filter(product => product.category && product.category === category.id).length
+      category.products = products ? products.filter(product => product.category && product.category === category.id).length : 0
     })
     ctx.body = categories
     ctx.status = 200
