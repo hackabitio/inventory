@@ -8,7 +8,7 @@ const createTheCode = txt => {
 
   const qrcode = new QRCode({
     content: txt,
-    padding: 2,
+    padding: 1,
     width: 256,
     height: 256,
     color: "#000000",
