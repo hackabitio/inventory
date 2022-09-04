@@ -9,13 +9,16 @@
 		</svg>
 		<ul>
 			<li class:active={$page.url.pathname === '/'}>
-				<a sveltekit:prefetch href="/">Available stock</a>
+				<a sveltekit:prefetch href="/">Available</a>
 			</li>
 			<li class:active={$page.url.pathname === '/add'}>
-				<a sveltekit:prefetch href="/add">Add stock</a>
+				<a sveltekit:prefetch href="/add">Add</a>
+			</li>
+			<li class:active={$page.url.pathname === '/info'}>
+				<a sveltekit:prefetch href="/info">Info</a>
 			</li>
 			<li class:active={$page.url.pathname === '/deduct'}>
-				<a sveltekit:prefetch href="/deduct">Release stock</a>
+				<a sveltekit:prefetch href="/deduct">Release</a>
 			</li>
 			<li class:active={$page.url.pathname === '/category'}>
 				<a sveltekit:prefetch href="/category">Categories</a>
@@ -28,7 +31,7 @@
 
 </header>
 
-<style>
+<style lang="scss">
 	nav {
 		display: flex;
 		justify-content: center;
@@ -82,11 +85,15 @@
 		padding: 0 1em;
 		color: var(--heading-color);
 		font-weight: 700;
-		font-size: 0.8rem;
+		font-size: 0.7rem;
 		text-transform: uppercase;
 		letter-spacing: 0.1em;
 		text-decoration: none;
 		transition: color 0.2s linear;
+
+		@media only screen and (min-width: 451px) {
+			font-size: 0.8rem;
+		}
 	}
 
 	a:hover {

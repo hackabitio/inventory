@@ -226,9 +226,12 @@
 		<tr class="table-header">
 			<th>SKU</th>
 			<th>Name</th>
-			<th>Quantity</th>
-			<th>Order price</th>
-			<th>Category</th>
+			<th>
+				<span class="show-in-mobile">Qty</span>
+				<span class="hide-in-mobile">Quantity</span>
+			</th>
+			<th class="hide-in-mobile">Order price</th>
+			<th class="hide-in-mobile">Category</th>
 			<th>Actions</th>
 		</tr>
 		{#each filteredProducts as product}
@@ -236,8 +239,8 @@
 				<td>{product.sku || '-'}</td>
 				<td>{product.name || '-'}</td>
 				<td>{product.qty || '-'}</td>
-				<td>{product.orderPrice || '-'}</td>
-				<td>{categoryName(product.category)}</td>
+				<td class="hide-in-mobile">{product.orderPrice || '-'}</td>
+				<td class="hide-in-mobile">{categoryName(product.category)}</td>
 				<td class="center-align record-actions">
 					<button class="icon-button" aria-label="View product" on:click={() => selectedProduct = product} >
 						<svg width="22" height="18" viewBox="0 0 22 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -417,14 +420,14 @@
 		right: 15px;
 		top: 15px;
 		cursor: pointer;
-	}
 
-	.close-dialog path {
-		fill: var(--text-color);
-	}
+		path {
+			fill: var(--text-color);
+		}
 
-	.close-dialog:hover path {
-		fill: var(--accent-color);
+		&:hover path {
+			fill: var(--accent-color);
+		}
 	}
 
 	.product-more-details {
@@ -459,6 +462,18 @@
 				margin-top: 0;
 				margin-bottom: 10px;
 			}
+		}
+	}
+	
+	@media only screen and (max-width: 450px) {
+		.hide-in-mobile {
+			display: none;
+		}
+	}
+
+	@media only screen and (min-width: 451px) {
+		.show-in-mobile {
+			display: none;
 		}
 	}
 </style>
