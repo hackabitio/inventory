@@ -306,6 +306,9 @@ export const getDeductions = async (ctx) => {
 export const getProducts = async (ctx) => {
   let withDetails = ctx.query.details
   await db.read()
+  if (db.data === null) {
+    await createDb(ctx)
+  }
   db.data = db.data || { products: [] }
   const { products } = db.data
 
