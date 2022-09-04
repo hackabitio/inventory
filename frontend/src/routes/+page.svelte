@@ -38,7 +38,6 @@
 		let filterCategory = e.target.value
 		const products = Object.keys(data.products).map((key) => data.products[key])
 		if (filterCategory == 0) {
-			console.log('All')
 			filteredProducts = products
 		} else {
 			filteredProducts = filterCategory ? products.filter(product => product.category === filterCategory) : products

@@ -35,8 +35,8 @@ export const addProduct = async (ctx) => {
     existingProduct.category = product.category
     existingProduct.name = product.name
     existingProduct.sku = product.sku
-    existingProduct.qty = product.qty
-    existingProduct.orderPrice = product.orderPrice
+    existingProduct.qty = parseInt(product.qty)
+    existingProduct.orderPrice = parseInt(product.orderPrice)
     existingProduct.id = product.id
     await db.write()
 
@@ -64,6 +64,8 @@ export const addProduct = async (ctx) => {
       }
       ctx.status = 201
     } else {
+      product.qty = parseInt(product.qty)
+      product.orderPrice = parseInt(product.orderPrice) / product.qty
       products.push(product)
       await db.write()
 
@@ -120,13 +122,15 @@ export const addStock = async (ctx) => {
       if (Array.isArray(theProduct)) {
         theProduct = theProduct[0]
       }
+      let quantity = parseInt(product.qty)
+      let unitPrice = parseInt(product.orderPrice) / quantity
       const newStock = {
         id,
         time: new Date(),
         name: theProduct.name,
         sku: theProduct.sku,
-        qty: parseInt(product.qty),
-        orderPrice: product.orderPrice
+        qty: quantity,
+        orderPrice: unitPrice
       }
       db.data = db.data || { additions: [] }
       const { additions } = db.data
