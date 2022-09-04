@@ -108,7 +108,7 @@
 			<h1>Add more to stock</h1>
 			<label>
 				Product name
-				<input bind:this={nameInput} autocomplete="off" type="text" id="addName" name="name" bind:value={addName} placeholder="Product name" on:input={findProduct}  on:blur={() => showNames = false} />
+				<input bind:this={nameInput} autocomplete="off" type="text" id="addName" name="name" bind:value={addName} placeholder="Product name" on:keyup={findProduct} />
 				{#if showNames}
 					<div class="products-autocomplete">
 						<ul>
@@ -124,7 +124,7 @@
 			</label>
 			<label>
 				SKU
-				<input type="text" id="addSku" name="sku" bind:value={addSku} placeholder="Product SKU" />
+				<input type="text" id="addSku" name="sku" bind:value={addSku}  on:focus={() => showNames = false} placeholder="Product SKU" />
 			</label>
 			<label>
 				Quantity

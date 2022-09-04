@@ -47,7 +47,7 @@
 
 	const findProduct = async (e) => {
 		foundProducts = Object.keys(data.products).map((key) => data.products[key]).filter(product => product.name.toLowerCase().indexOf(addName.toLowerCase()) > -1)
-		showNames = addName.length && foundProducts.length
+		showNames = addName && addName.length && foundProducts.length
 		if (showNames) {
 			let autoSuggest = document.querySelectorAll('.products-autocomplete ul li')
 			if (e.key === 'ArrowDown') {
@@ -168,7 +168,7 @@
 			{/if}
 			<label>
 				Product name
-				<input autocomplete="off" type="text" id="addName" name="name" bind:value={addName} placeholder="Product name"  on:input={findProduct} on:blur={() => showNames = false} />
+				<input autocomplete="off" type="text" id="addName" name="name" bind:value={addName} placeholder="Product name" on:keyup={findProduct} />
 				{#if showNames}
 					<div class="products-autocomplete">
 						<ul>
@@ -184,7 +184,7 @@
 			</label>
 			<label>
 				SKU
-				<input type="text" id="addSku" name="sku" bind:value={addSku} placeholder="Product SKU" />
+				<input type="text" id="addSku" name="sku" bind:value={addSku} on:focus={() => showNames = false} placeholder="Product SKU" />
 			</label>
 			<label>
 				Quantity
