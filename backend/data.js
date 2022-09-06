@@ -34,7 +34,7 @@ export const addProduct = async (ctx) => {
     existingProduct.details = product.details
     existingProduct.category = product.category
     existingProduct.name = product.name
-    existingProduct.sku = product.sku
+    existingProduct.sku = product.sku.toLowerCase()
     existingProduct.qty = parseInt(product.qty)
     existingProduct.orderPrice = parseInt(product.orderPrice)
     existingProduct.id = product.id
@@ -65,7 +65,8 @@ export const addProduct = async (ctx) => {
       ctx.status = 201
     } else {
       product.qty = parseInt(product.qty)
-      product.orderPrice = parseInt(product.orderPrice) / product.qty
+      product.orderPrice = (parseInt(product.orderPrice) / product.qty).toFixed(4)
+      product.sku = product.sku.toLowerCase()
       products.push(product)
       await db.write()
 
