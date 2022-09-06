@@ -4,3 +4,4 @@ node_modules
 .vscode
 backend/images
 backend/database.json
+backups
