@@ -191,7 +191,7 @@
 			</label>
 			<label>
 				Order price
-				<input type="number" id="orderPrice" name="orderPrice" bind:value={addPrice} placeholder="Order price" />
+				<input type="number" step="any" id="orderPrice" name="orderPrice" bind:value={addPrice} placeholder="Order price" />
 			</label>
 			<label>
 				More details
@@ -199,7 +199,7 @@
 			</label>
 			<div>
 				<button value="cancel" type="reset" on:click={() => formDialogOpen = false}>Cancel</button>
-				<button id="confirmBtn" value="default" type="submit" disabled={submitDisabled}>Add</button>
+				<button id="confirmBtn" value="default" type="submit" disabled={submitDisabled}>{addID ? 'Update' : 'Add'}</button>
 			</div>
 		</form>
 	</dialog>
