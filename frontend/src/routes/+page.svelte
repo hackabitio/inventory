@@ -238,7 +238,7 @@
 				<td>{product.sku || '-'}</td>
 				<td>{product.name || '-'}</td>
 				<td>{product.qty || '-'}</td>
-				<td class="hide-in-mobile">{product.orderPrice || '-'}</td>
+				<td class="hide-in-mobile">{product.orderPrice ? parseFloat(product.orderPrice).toFixed(2) : '-'}</td>
 				<td class="hide-in-mobile">{categoryName(product.category)}</td>
 				<td class="center-align record-actions">
 					<button class="icon-button" aria-label="View product" on:click={() => selectedProduct = product} >
@@ -387,6 +387,7 @@
 	}
 
 	.product-details-dialog {
+		position: fixed;
 		top: 50%;
 		transform: translateY(-50%);
 	}
