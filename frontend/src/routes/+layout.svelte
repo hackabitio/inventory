@@ -9,7 +9,7 @@
 	<slot />
 </main>
 
-<footer>
+<footer class="no-print">
 	<p>Simple, yet practical inventory management</p>
 </footer>
 

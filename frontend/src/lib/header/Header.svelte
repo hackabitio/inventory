@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 </script>
 
-<header>
+<header class="no-print">
 	<nav>
 		<svg viewBox="0 0 2 3" aria-hidden="true">
 			<path d="M0,0 L1,2 C1.5,3 1.5,3 2,3 L2,0 Z" />
@@ -22,6 +22,9 @@
 			</li>
 			<li class:active={$page.url.pathname === '/category'}>
 				<a sveltekit:prefetch href="/category">Categories</a>
+			</li>
+			<li class="hide-in-mobile" class:active={$page.url.pathname === '/print'}>
+				<a sveltekit:prefetch href="/print">Print</a>
 			</li>
 		</ul>
 		<svg viewBox="0 0 2 3" aria-hidden="true">
@@ -98,5 +101,11 @@
 
 	a:hover {
 		color: var(--accent-color);
+	}
+
+	@media only screen and (max-width: 450px) {
+		.hide-in-mobile {
+			display: none;
+		}
 	}
 </style>

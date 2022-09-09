@@ -15,6 +15,10 @@
 	--column-margin-top: 4rem;
 }
 
+* {
+	box-sizing: border-box;
+}
+
 body {
 	min-height: 100vh;
 	margin: 0;
@@ -204,5 +208,12 @@ tr:first-child {
 			display: grid;
 			grid-template-columns: 2fr 1fr 1fr;
 		}
+	}
+}
+
+@media print {
+	.no-print,
+	.no-print * {
+		display: none !important;
 	}
 }
