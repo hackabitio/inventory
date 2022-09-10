@@ -1,6 +1,7 @@
 <script>
 	import { enhance } from '$lib/form'
 	import { formatDate } from '$lib/functions'
+	import html2canvas from 'html2canvas'
 
 	export let data
 	let categories = Object.keys(data.categories).map((key) => data.categories[key])
@@ -21,6 +22,8 @@
 	let addCategory
 	let submitDisabled
 	let selectedProduct = null
+	let printProduct = null
+	let showName = false
 	$: submitDisabled = !addSku || !addName || !addQty || !addPrice
 	let currentFocus
 
@@ -61,6 +64,34 @@
 				currentFocus = -1
 			}
 		}
+	}
+
+	const printPrev = product => {
+		printProduct = product
+		setTimeout(()=>{
+			const el = document.querySelector(".print-details")
+			html2canvas(el, {
+				allowTaint: true
+			}).then(canvas => {
+				document.getElementById('printCanvas').appendChild(canvas)
+				el.style.display = 'none'
+			});
+		}, 10)
+	}
+
+	const toggleName = () => {
+		showName = !showName
+		setTimeout(() => {
+			const el = document.querySelector(".print-details")
+			el.style.display = 'block'
+			document.getElementById('printCanvas').innerHTML = ''
+			html2canvas(el, {
+				allowTaint: true
+			}).then(canvas => {
+				document.getElementById('printCanvas').appendChild(canvas)
+				el.style.display = 'none'
+			});
+		}, 10)
 	}
 
 	const setActive = x => {
@@ -106,6 +137,7 @@
 		if (e.key === 'Escape') {
 			formDialogOpen = false
 			selectedProduct = null
+			printProduct = null
 			document.querySelector('form').reset()
 			addID = null
 			addSku = null
@@ -246,6 +278,11 @@
 							<path d="M6.11138 8.58242C6.11138 5.87359 8.30002 3.67818 11.0005 3.67818C13.7009 3.67818 15.8896 5.87359 15.8896 8.58242C15.8896 11.2912 13.7009 13.4867 11.0005 13.4867C8.30002 13.4867 6.11138 11.2912 6.11138 8.58242ZM11.0005 11.6476C12.6887 11.6476 14.0562 10.2759 14.0562 8.58242C14.0562 6.88892 12.6887 5.51727 11.0005 5.51727C10.9737 5.51727 10.9508 5.51727 10.8897 5.51727C10.9737 5.71267 11.0005 5.91957 11.0005 6.1303C11.0005 7.4828 9.90425 8.58242 8.55593 8.58242C8.34585 8.58242 8.13959 8.5556 7.94479 8.47131C7.94479 8.53261 7.94479 8.5556 7.94479 8.54794C7.94479 10.2759 9.31221 11.6476 11.0005 11.6476ZM3.64468 3.08814C5.44295 1.4115 7.91424 0 11.0005 0C14.0867 0 16.558 1.4115 18.357 3.08814C20.1446 4.75098 21.3402 6.70885 21.9055 8.11115C22.0315 8.41383 22.0315 8.751 21.9055 9.05368C21.3402 10.4215 20.1446 12.3794 18.357 14.0767C16.558 15.7549 14.0867 17.1648 11.0005 17.1648C7.91424 17.1648 5.44295 15.7549 3.64468 14.0767C1.8571 12.3794 0.662325 10.4215 0.0940054 9.05368C-0.0313351 8.751 -0.0313351 8.41383 0.0940054 8.11115C0.662325 6.70885 1.8571 4.75098 3.64468 3.08814ZM11.0005 1.83909C8.51009 1.83909 6.46278 2.97319 4.89292 4.43297C3.42237 5.80463 2.40712 7.3985 1.88842 8.58242C2.40712 9.73185 3.42237 11.3602 4.89292 12.7319C6.46278 14.1916 8.51009 15.3257 11.0005 15.3257C13.4909 15.3257 15.5382 14.1916 17.108 12.7319C18.5786 11.3602 19.5602 9.73185 20.1141 8.58242C19.5602 7.3985 18.5786 5.80463 17.108 4.43297C15.5382 2.97319 13.4909 1.83909 11.0005 1.83909Z" fill="black"/>
 						</svg>
 					</button>
+					<button class="icon-button" aria-label="print product" on:click={() => printPrev(product)} >
+						<svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M4.25 0C3.07793 0 2.125 0.95293 2.125 2.125V5.3125H4.25V2.125H11.7771L12.75 3.09785V5.3125H14.875V3.09785C14.875 2.5334 14.6525 1.99219 14.2541 1.59375L13.2812 0.620898C12.8828 0.222461 12.3416 0 11.7771 0H4.25ZM12.75 11.6875V12.75V14.875H4.25V12.75V12.2188V11.6875H12.75ZM14.875 12.75H15.9375C16.5252 12.75 17 12.2752 17 11.6875V8.5C17 7.32793 16.0471 6.375 14.875 6.375H2.125C0.95293 6.375 0 7.32793 0 8.5V11.6875C0 12.2752 0.474805 12.75 1.0625 12.75H2.125V14.875C2.125 16.0471 3.07793 17 4.25 17H12.75C13.9221 17 14.875 16.0471 14.875 14.875V12.75ZM14.3438 9.82812C13.9021 9.82812 13.5469 9.47285 13.5469 9.03125C13.5469 8.58965 13.9021 8.23438 14.3438 8.23438C14.7854 8.23438 15.1406 8.58965 15.1406 9.03125C15.1406 9.47285 14.7854 9.82812 14.3438 9.82812Z" fill="black"/>
+						</svg>
+					</button>
 					<form
 						action="/?_method=DELETE"
 						method="post"
@@ -358,6 +395,26 @@
 			</div>
 		{/if}
 	</dialog>
+	<dialog class="product-print-dialog" open={printProduct !== null} on:close={() => printProduct = null} id="printProduct">
+		<svg on:click={() => printProduct = null} class="close-dialog" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path d="M17.4699 14.929C18.173 15.6321 18.173 16.771 17.4699 17.4741C17.1212 17.8256 16.6599 18 16.1987 18C15.7375 18 15.2774 17.8242 14.9265 17.4727L8.9993 11.5486L3.0727 17.4713C2.72116 17.8256 2.26051 18 1.79986 18C1.33921 18 0.879119 17.8256 0.527303 17.4713C-0.175768 16.7682 -0.175768 15.6292 0.527303 14.9262L6.45559 8.99789L0.527303 3.07242C-0.175768 2.36935 -0.175768 1.23037 0.527303 0.527303C1.23037 -0.175768 2.36935 -0.175768 3.07242 0.527303L8.9993 6.4584L14.9276 0.530115C15.6307 -0.172955 16.7696 -0.172955 17.4727 0.530115C18.1758 1.23319 18.1758 2.37216 17.4727 3.07523L11.5444 9.00351L17.4699 14.929Z" fill="black"/>
+		</svg>
+		<label for="showName">
+			Show name
+			<input type="checkbox" name="showName" id="showName" on:change={toggleName}>
+		</label>
+		{#if printProduct}
+			<div class="print-details">
+				<img class="product-qr-code" src="http://localhost:8000/images/{printProduct.sku}.svg" alt="">
+				<span class="sku">{printProduct.sku}</span>
+				{#if showName}
+					<h4 class="product-name">{printProduct.name}</h4>
+				{/if}
+			</div>
+
+			<div id="printCanvas"></div>
+		{/if}
+	</dialog>
 </section>
 
 <style lang="scss">
@@ -386,34 +443,36 @@
 		max-width: 180px;
 	}
 
-	.product-details-dialog {
+	.product-details-dialog,
+	.product-print-dialog {
 		position: fixed;
 		top: 50%;
 		transform: translateY(-50%);
 	}
 
-	.product-details-dialog[open] {
+	.product-details-dialog[open]:not(.product-print-dialog) {
 		display: grid;
 		grid-template-areas:
 						"name name name"
 						"desc desc images"
 						"details details details"
 						"transactions transactions transactions";
-	}
 
-	.product-name {
-		grid-area: name;
-		margin-bottom: 20px;
-	}
+		.product-name {
+			grid-area: name;
+			margin-bottom: 20px;
+		}
 
-	.product-details {
-		grid-area: desc;
+		.product-details {
+			grid-area: desc;
 
-		p {
-			margin-top: 0;
-			margin-bottom: 5px;
+			p {
+				margin-top: 0;
+				margin-bottom: 5px;
+			}
 		}
 	}
+
 
 	.close-dialog {
 		position: absolute;
@@ -427,6 +486,27 @@
 
 		&:hover path {
 			fill: var(--accent-color);
+		}
+	}
+
+	.product-print-dialog {
+		min-width: initial;
+
+		.print-details {
+			width: 300px;
+			text-align: center;
+		}
+
+		.product-qr-code {
+			max-width: unset;
+		}
+
+		.product-name {
+			font-size: 18px;
+		}
+
+		.sku {
+			font-size: 20px;
 		}
 	}
 

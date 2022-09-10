@@ -1,6 +1,6 @@
 <script>
 	export let data
-	let product = null
+	let showName = false
 	let categories = Object.keys(data.categories).map((key) => data.categories[key])
 	let products = Object.keys(data.products).map((key) => data.products[key])
 
@@ -13,6 +13,9 @@
 
 <div class="content">
 	<h1 class="no-print">All products for print</h1>
+	<label for="showName" class="show-names no-print">Show names
+		<input id="showName" class="sku-input" name="showName" type="checkbox" on:change={() => showName = !showName} />
+	</label>
 	<section class="products">
 		{#if products}
 			{#each products as product}
@@ -21,7 +24,9 @@
 					<span>
 						{product.sku}
 					</span>
-					<h4>{product.name}</h4>
+					{#if showName}
+						<h4>{product.name}</h4>
+					{/if}
 				</div>
 			{:else}
 				<h1>Nothing to display</h1>
@@ -34,12 +39,7 @@
 <style lang="scss">
 	.products {
 		--cards-per-line: 6;
-		display: flex;
-		flex-wrap: wrap;
 
-		@media print {
-			display: initial;
-		}
 	}
 
 	.product {
@@ -49,16 +49,23 @@
 		outline: 1px solid rgb(0 0 0 / 10%);
 		text-align: center;
 
+		span {
+			font-size: 14px;
+		}
 
 		h4 {
 			word-break: break-word;
 			margin-top: 5px;
 			margin-bottom: 0;
-				font-size: 14px;
+			font-size: 14px;
 		}
 
 		@media print {
 			break-inside: avoid;
+		}
+
+		h4 {
+			font-size: 12px;
 		}
 	}
 
@@ -67,5 +74,11 @@
 		margin-inline: auto;
 		max-width: 80%;
 		margin-bottom: 5px;
+	}
+
+	.show-names {
+		display: block;
+		text-align: center;
+		margin-bottom: 30px;
 	}
 </style>

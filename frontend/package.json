@@ -18,5 +18,8 @@
 		"vite": "^3.0.8",
 		"vite-plugin-browser-sync": "^1.0.0"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"html2canvas": "^1.4.1"
+	}
 }
