@@ -141,7 +141,7 @@
       </label>
       <label>
         Sell price
-        <input type="number" id="sellPrice" name="sellPrice" bind:value={addPrice} placeholder="Sell price" />
+        <input type="number" step="any" id="sellPrice" name="sellPrice" bind:value={addPrice} placeholder="Sell price" />
       </label>
       <div>
         <button value="cancel" type="reset" on:click={() => formDialogOpen = false}>Cancel</button>
