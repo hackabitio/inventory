@@ -23,7 +23,7 @@
 	}
 
 	const clearSku = e => {
-		if (product) {
+		if (product && isMobile) {
 			filterSku = 'BCSCAN '
 			product = null
 		}
