@@ -5,7 +5,7 @@
 	let categories = Object.keys(data.categories).map((key) => data.categories[key])
 	let products = Object.keys(data.products).map((key) => data.products[key])
 
-	products = products.splice(149, 32)
+	// products = products.splice(149, 32)
 
 </script>
 
