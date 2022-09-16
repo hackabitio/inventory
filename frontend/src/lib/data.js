@@ -123,5 +123,48 @@ export const getCategories = async () => {
   } else {
     return []
   }
+}
 
+export const addCategory = async (category) => {
+  category.id = crypto.randomUUID()
+  await db.read()
+
+  db.data = db.data || { categories: [] }
+  const { categories } = db.data
+  let existingCategories = categories && categories.find(c => c.name === category.name)
+  if (existingCategories) {
+    return null
+  } else {
+    categories.push(category)
+    await db.write()
+    return category.id
+  }
+}
+
+export const deleteCategory = async (id) => {
+  await db.read()
+
+  let theCategory = db.data.categories.filter(category => category.id === id)
+  db.data.categories = db.data.categories.filter(category => category.id !== id)
+  if (theCategory.length) {
+    await db.write()
+
+    return id
+  } else {
+    return null
+  }
+}
+
+export const updateCategory = async (category) => {
+  await db.read()
+  db.data = db.data || { categories: [] }
+  const { categories } = db.data
+  let findCategory = categories.find(c => c.id === category.id)
+  if (!findCategory) {
+    return null
+  } else {
+    findCategory.name = category.name
+    await db.write()
+    return category.id
+  }
 }

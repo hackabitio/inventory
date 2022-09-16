@@ -1,20 +1,9 @@
-import {error} from "@sveltejs/kit"
 import { api } from './api'
+import { addCategory, deleteCategory, getCategories, updateCategory } from '$lib/data'
 
 export const load = async () => {
-  const response = await api('GET', 'categories')
-
-  if (response.status === 404) {
-    return {
-      stock: []
-    }
-  }
-
-  if (response.status === 200) {
-    return await response.json()
-  }
-
-  throw error(response.status)
+  const categories = await getCategories()
+  return categories
 }
 
 export const POST = async ({ request }) => {
@@ -24,27 +13,21 @@ export const POST = async ({ request }) => {
     const [key, value] = field
     submittedData[key] = value
   }
-  await api('POST', `add-category`, {
-    category: submittedData
-  })
+  await addCategory(submittedData)
 }
 
 
 export const DELETE = async ({ request }) => {
   const form = await request.formData()
   const id = form.get('id')
-  if (id) {
-    await api('DELETE', `delete-category?id=${id}`)
-  }
+  await deleteCategory(id)
 }
 
 export const PATCH = async ({ request, locals }) => {
   const form = await request.formData();
-
-  await api('PATCH', `update-category`, {
-    category: {
-      id: form.get('newId'),
-      name: form.get('newName')
-    }
-  });
+  const category = {
+    id: form.get('newId'),
+    name: form.get('newName')
+  }
+  await updateCategory(category)
 };

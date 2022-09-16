@@ -1,6 +1,7 @@
 <script>
 	import { enhance } from '$lib/form';
 	export let data
+
 	$: categories = Object.keys(data).map((key) => data[key])
 	let filteredCategories = Object.keys(data).map((key) => data[key])
 
