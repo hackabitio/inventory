@@ -1,4 +1,3 @@
-import { api } from './api'
 import { getAdditions, getProducts, addStock, deleteAddition } from '$lib/data'
 
 export const load = async () => {

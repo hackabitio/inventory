@@ -246,5 +246,88 @@ export const deleteAddition = async (id) => {
   } else {
     return null
   }
+}
+
+
+export const getDeductions = async () => {
+  await db.read()
+  db.data = db.data || { deductions: [] }
+  const { deductions } = db.data
+
+  if (deductions) {
+    return deductions
+  } else {
+    return null
+  }
+}
+
+export const deductStock = async (product) => {
+  let id = crypto.randomUUID()
+  let sku = product.sku
+  if (typeof sku === 'undefined') {
+    return null
+  } else {
+    sku = sku.toLowerCase().replace(/\s/g, '-')
+    // Get the product from available stock database stockDb
+    await db.read()
+    db.data = db.data || { products: [] }
+    const { products } = db.data
+    let theProduct = products.find((p) => p.sku === sku)
+    if (theProduct) {
+      if (Array.isArray(theProduct)) {
+        theProduct = theProduct[0]
+      }
+      const releasing = {
+        id,
+        time: new Date(),
+        sku: theProduct.sku,
+        name: theProduct.name,
+        qty: parseInt(product.qty),
+        sellPrice: parseInt(product.sellPrice),
+      }
+
+      let oldQty = parseInt(theProduct.qty)
+      if (oldQty >= product.qty) {
+        let newQty = oldQty - parseInt(product.qty)
+        theProduct.qty = parseInt(newQty)
+        theProduct.deductions.push(id)
+
+        db.data = db.data || { deductions: [] }
+        const { deductions } = db.data
+        deductions.push(releasing)
+        await db.write()
+
+        return theProduct.id
+      } else {
+        return null
+      }
+    } else {
+      return null
+    }
+  }
+}
+
+
+export const deleteDeduction = async (id) => {
+  if (!id) {
+    return null
+  }
+  // Get the product from available stock database stockDb
+  await db.read()
+
+  let theDeduction = db.data.deductions.filter(deduction => deduction.id === id)
+  db.data.deductions = db.data.deductions.filter(deduction => deduction.id !== id)
+  if (theDeduction.length) {
+    let theProduct = db.data.products.filter(product => theDeduction[0].sku === product.sku)
+    if (theProduct) {
+      theProduct = Array.isArray(theProduct) ? theProduct[0] : theProduct
+      theProduct.deductions = theProduct.deductions.filter(deduction => deduction !== id)
+    }
+    await db.write()
+
+    return id
+  } else {
+    return null
+  }
 
 }
