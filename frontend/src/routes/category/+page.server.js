@@ -1,4 +1,3 @@
-import { api } from './api'
 import { addCategory, deleteCategory, getCategories, updateCategory } from '$lib/data'
 
 export const load = async () => {
