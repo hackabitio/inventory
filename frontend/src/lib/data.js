@@ -1,6 +1,7 @@
 import { join, dirname } from 'path'
 import { Low, JSONFile } from 'lowdb'
-import {fileURLToPath} from "url";
+import { fileURLToPath } from 'url'
+import { generateQr }  from '$lib/qrcode'
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const file = join(__dirname, 'database.json')
@@ -18,7 +19,7 @@ export const createDb = async () => {
 export const getProducts = async (withDetails = false) => {
   await db.read()
   if (db.data === null) {
-    await createDb(ctx)
+    await createDb()
   }
   db.data = db.data || { products: [] }
   const { products } = db.data
@@ -40,6 +41,56 @@ export const getProducts = async (withDetails = false) => {
   } else {
     return []
   }
+}
+
+
+export const addProduct = async (product) => {
+  await db.read()
+  db.data = db.data || { products: [] }
+  const { products } = db.data
+  let updateIt = (product.productId && product.editOrNew)
+  product.id = updateIt ? product.productId : crypto.randomUUID()
+
+  delete product.productId
+  delete product.editOrNew
+
+  if (updateIt) {
+    let existingProduct = products.find((p) => p.id === product.id)
+    existingProduct.details = product.details
+    existingProduct.category = product.category
+    existingProduct.name = product.name
+    existingProduct.sku = product.sku.toLowerCase()
+    existingProduct.qty = parseInt(product.qty)
+    existingProduct.orderPrice = parseFloat(product.orderPrice)
+    existingProduct.id = product.id
+    await db.write()
+
+    return product.id
+  } else {
+    product.additions = []
+    product.deductions = []
+    let sku = product.sku
+    if (sku) {
+      sku = sku.toLowerCase().replace(/\s/g, '-')
+      generateQr(sku)
+    } else {
+      sku = product.name.toLowerCase().replace(/\s/g, '-')
+    }
+
+    let existingProduct = products.find((p) => p.sku === sku)
+    if (existingProduct) {
+      return existingProduct.id
+    } else {
+      product.qty = parseInt(product.qty)
+      product.orderPrice = (parseInt(product.orderPrice) / product.qty).toFixed(4)
+      product.sku = product.sku.toLowerCase()
+      products.push(product)
+      await db.write()
+
+      return product.id
+    }
+  }
+  return null
 }
 
 export const getCategories = async () => {

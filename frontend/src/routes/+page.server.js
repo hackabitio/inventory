@@ -1,5 +1,5 @@
 import { api } from './api'
-import { createDb, getProducts, getCategories } from '$lib/data'
+import { createDb, getProducts, getCategories, addProduct } from '$lib/data'
 
 export const load = async () => {
   createDb()
@@ -17,9 +17,7 @@ export const POST = async ({ request }) => {
     const [key, value] = field;
     submittedData[key] = value;
   }
-  await api('POST', `add-product`, {
-    product: submittedData
-  })
+  addProduct(submittedData)
 }
 
 export const DELETE = async ({ request }) => {

@@ -3,5 +3,6 @@ node_modules
 .idea
 .vscode
 backend/images
+qr
 database.json
 backups
