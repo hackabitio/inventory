@@ -93,6 +93,26 @@ export const addProduct = async (product) => {
   return null
 }
 
+export const deleteProduct = async (id) => {
+  if (!id) {
+    return null
+  }
+  await db.read()
+
+  let theProduct = db.data.products.find(product => product.id === id)
+  if (theProduct) {
+    db.data.products = db.data.products.filter(product => product.id !== id)
+    db.data.additions = db.data.additions.filter(addition => !theProduct.additions.includes(addition.id))
+    db.data.deductions = db.data.deductions.filter(deduction => !theProduct.deductions.includes(deduction.id))
+    await db.write()
+
+    return id
+  } else {
+    return null
+  }
+}
+
+
 export const getCategories = async () => {
   await db.read()
   db.data = db.data || { categories: [] }

@@ -1,5 +1,5 @@
 import { api } from './api'
-import { createDb, getProducts, getCategories, addProduct } from '$lib/data'
+import { createDb, getProducts, getCategories, addProduct, deleteProduct } from '$lib/data'
 
 export const load = async () => {
   createDb()
@@ -24,6 +24,6 @@ export const DELETE = async ({ request }) => {
   const form = await request.formData()
   const id = form.get('id')
   if (id) {
-    await api('DELETE', `delete-product?id=${id}`)
+    deleteProduct(id)
   }
 }
