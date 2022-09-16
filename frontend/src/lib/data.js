@@ -168,3 +168,83 @@ export const updateCategory = async (category) => {
     return category.id
   }
 }
+
+export const getAdditions = async () => {
+  await db.read()
+  db.data = db.data || { additions: [] }
+  const { additions } = db.data
+
+  if (additions) {
+    return additions
+  } else {
+    return null
+  }
+}
+
+
+export const addStock = async (product) => {
+  let id = crypto.randomUUID()
+  let sku = product.sku
+  if (typeof sku === 'undefined') {
+    return null
+  } else {
+    sku = sku.toLowerCase().replace(/\s/g, '-')
+    // Get the product from available stock database stockDb
+    await db.read()
+    db.data = db.data || { products: [] }
+    const { products } = db.data
+    let theProduct = products.find((p) => p.sku === sku)
+
+    if (theProduct) {
+      if (Array.isArray(theProduct)) {
+        theProduct = theProduct[0]
+      }
+      let quantity = parseInt(product.qty)
+      let unitPrice = parseInt(product.orderPrice) / quantity
+      const newStock = {
+        id,
+        time: new Date(),
+        name: theProduct.name,
+        sku: theProduct.sku,
+        qty: quantity,
+        orderPrice: unitPrice
+      }
+      db.data = db.data || { additions: [] }
+      const { additions } = db.data
+      additions.push(newStock)
+
+      let oldQty = parseInt(theProduct.qty)
+      let newQty = oldQty + parseInt(product.qty)
+      theProduct.qty = parseInt(newQty)
+      theProduct.additions.push(id)
+      await db.write()
+
+      return theProduct.id
+    }
+
+  }
+}
+
+export const deleteAddition = async (id) => {
+  if (!id) {
+    return null
+  }
+  // Get the product from available stock database stockDb
+  await db.read()
+
+  let theAddition = db.data.additions.filter(addition => addition.id === id)
+  db.data.additions = db.data.additions.filter(addition => addition.id !== id)
+  if (theAddition.length) {
+    let theProduct = db.data.products.filter(product => theAddition[0].sku === product.sku)
+    if (theProduct) {
+      theProduct = Array.isArray(theProduct) ? theProduct[0] : theProduct
+      theProduct.additions = theProduct.additions.filter(addition => addition !== id)
+    }
+    await db.write()
+
+    return id
+  } else {
+    return null
+  }
+
+}

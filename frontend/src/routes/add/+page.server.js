@@ -1,24 +1,11 @@
-import { error } from '@sveltejs/kit';
 import { api } from './api'
+import { getAdditions, getProducts, addStock, deleteAddition } from '$lib/data'
 
 export const load = async () => {
-  const additions = await api('GET', 'all-additions')
-  const products = await api('GET', 'products')
-  if (additions.status === 404 && products.status === 404) {
-    return {
-      stock: [],
-      products: []
-    }
+  return {
+    additions: await getAdditions(),
+    products: await getProducts()
   }
-  if (additions.status === 200 && products.status === 200) {
-    const returnVal = {
-      additions: await additions.json(),
-      products: await products.json()
-    }
-    return returnVal
-  }
-
-  throw error(additions.status)
 }
 
 export const POST = async ({ request }) => {
@@ -28,15 +15,13 @@ export const POST = async ({ request }) => {
     const [key, value] = field;
     submittedData[key] = value;
   }
-  await api('POST', `add-stock`, {
-    product: submittedData
-  })
+  await addStock(submittedData)
 }
 
 export const DELETE = async ({ request }) => {
   const form = await request.formData()
   const id = form.get('id')
   if (id) {
-    await api('DELETE', `delete-addition?id=${id}`)
+    await deleteAddition(id)
   }
 }
