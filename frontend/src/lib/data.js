@@ -46,8 +46,6 @@ export const getProducts = async (withDetails = false) => {
 
 export const addProduct = async (product) => {
   await db.read()
-  db.data = db.data || { products: [] }
-  const { products } = db.data
   let updateIt = (product.productId && product.editOrNew)
   product.id = updateIt ? product.productId : crypto.randomUUID()
 
@@ -55,7 +53,7 @@ export const addProduct = async (product) => {
   delete product.editOrNew
 
   if (updateIt) {
-    let existingProduct = products.find((p) => p.id === product.id)
+    let existingProduct = db.data.products.find((p) => p.id === product.id)
     existingProduct.details = product.details
     existingProduct.category = product.category
     existingProduct.name = product.name
@@ -64,7 +62,6 @@ export const addProduct = async (product) => {
     existingProduct.orderPrice = parseFloat(product.orderPrice)
     existingProduct.id = product.id
     await db.write()
-
     return product.id
   } else {
     product.additions = []
@@ -72,25 +69,24 @@ export const addProduct = async (product) => {
     let sku = product.sku
     if (sku) {
       sku = sku.toLowerCase().replace(/\s/g, '-')
-      generateQr(sku)
     } else {
       sku = product.name.toLowerCase().replace(/\s/g, '-')
     }
-
-    let existingProduct = products.find((p) => p.sku === sku)
+    generateQr(sku)
+    let existingProduct = db.data.products.find((p) => p.sku === sku)
     if (existingProduct) {
       return existingProduct.id
     } else {
       product.qty = parseInt(product.qty)
-      product.orderPrice = (parseInt(product.orderPrice) / product.qty).toFixed(4)
-      product.sku = product.sku.toLowerCase()
-      products.push(product)
+      product.orderPrice = parseFloat(parseFloat(parseFloat(product.orderPrice) / product.qty).toFixed(4))
+      product.sku = sku.toLowerCase()
+      db.data.products.push(product)
+      console.log(db.data.products)
       await db.write()
 
       return product.id
     }
   }
-  return null
 }
 
 export const deleteProduct = async (id) => {

@@ -17,13 +17,13 @@ export const POST = async ({ request }) => {
     const [key, value] = field;
     submittedData[key] = value;
   }
-  addProduct(submittedData)
+  await addProduct(submittedData)
 }
 
 export const DELETE = async ({ request }) => {
   const form = await request.formData()
   const id = form.get('id')
   if (id) {
-    deleteProduct(id)
+    await deleteProduct(id)
   }
 }
