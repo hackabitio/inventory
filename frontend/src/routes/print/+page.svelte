@@ -59,7 +59,7 @@
 			<section class="grid-products">
 				{#each products as product}
 					<div class="product">
-						<img class="product-qr-code" src="http://localhost:8000/images/{product.sku}.png" alt="">
+						<img class="product-qr-code" src="qr/{product.sku}.png" alt="">
 						<div class="sku">
 							{product.sku}
 						</div>
