@@ -1,6 +1,6 @@
 import QRCode from 'qrcode-svg'
 import sharp from 'sharp'
-const exportLocation = './qr/'
+const exportLocation = './static/qr/'
 
 const createTheCode = txt => {
   txt = txt.toLowerCase()
