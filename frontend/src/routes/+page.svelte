@@ -405,7 +405,7 @@
 		</label>
 		{#if printProduct}
 			<div class="print-details">
-				<img class="product-qr-code" src="qr/{printProduct.sku}.svg" alt="">
+				<img class="product-qr-code" src="qr/{printProduct.sku}.png" alt="">
 				<span class="sku">{printProduct.sku}</span>
 				{#if showName}
 					<h4 class="product-name">{printProduct.name}</h4>
