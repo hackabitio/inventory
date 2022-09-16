@@ -3,5 +3,5 @@ node_modules
 .idea
 .vscode
 backend/images
-backend/database.json
+database.json
 backups

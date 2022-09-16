@@ -1,25 +1,13 @@
-import {error} from "@sveltejs/kit"
 import { api } from './api'
+import { createDb, getProducts, getCategories } from '$lib/data'
 
 export const load = async () => {
-  const response = await api('GET', 'products?details=true')
-  const categories = await api('GET', 'categories')
+  createDb()
 
-  if (response.status === 404 && categories.status === 404) {
-    return {
-      stock: [],
-      categories: []
-    }
+  return {
+    products: getProducts(true),
+    categories: getCategories()
   }
-
-  if (response.status === 200 && categories.status === 200) {
-    return {
-      products: await response.json(),
-      categories: await categories.json()
-    }
-  }
-
-  throw error(response.status)
 }
 
 export const POST = async ({ request }) => {
