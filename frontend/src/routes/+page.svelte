@@ -334,7 +334,7 @@
 					</p>
 				{/if}
 			</div>
-			<img class="product-qr-code" src="http://localhost:8000/images/{selectedProduct.sku}.png" alt="">
+			<img class="product-qr-code" src="qr/{selectedProduct.sku}.png" alt="">
 			{#if selectedProduct.details}
 				<div class="product-more-details">
 					<h3>More details</h3>
