@@ -41,8 +41,8 @@
 						<th>#</th>
 						<th>Name</th>
 						<th>SKU</th>
-						<th>Qty</th>
 						<th>Cost</th>
+						<th>Qty</th>
 					</tr>
 				{#each products as product, index}
 					<tr>
