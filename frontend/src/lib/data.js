@@ -59,6 +59,7 @@ export const addProduct = async (product) => {
     existingProduct.name = product.name
     existingProduct.sku = product.sku.toLowerCase()
     existingProduct.qty = parseInt(product.qty)
+    existingProduct.warehousePlace = product.warehousePlace
     existingProduct.orderPrice = parseFloat(product.orderPrice)
     existingProduct.id = product.id
     await db.write()

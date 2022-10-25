@@ -18,6 +18,7 @@
 	let addName
 	let addQty
 	let addPrice
+	let warehousePlace
 	let addDetails = null
 	let addCategory
 	let submitDisabled
@@ -133,6 +134,7 @@
 		addQty = product.qty
 		addPrice = product.orderPrice
 		addDetails = product.details
+		warehousePlace = product.warehousePlace
 		addCategory = product.category
 	}
 
@@ -156,6 +158,7 @@
 			addPrice = null
 			addDetails = null
 			addCategory = null
+			warehousePlace = null
 		}
 	}
 
@@ -234,6 +237,10 @@
 			<label>
 				Order price
 				<input type="number" step="any" id="orderPrice" name="orderPrice" bind:value={addPrice} placeholder="Order price" />
+			</label>
+			<label>
+				Warehouse place
+				<input type="text" id="warehousePlace" name="warehousePlace" bind:value={warehousePlace} placeholder="Warehouse place" />
 			</label>
 			<label>
 				More details
