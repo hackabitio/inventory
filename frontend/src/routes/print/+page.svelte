@@ -106,11 +106,7 @@
 	}
 
 	.product {
-		//display: inline-grid;
-		//width: calc(100% / var(--cards-per-line));
 		padding: 5px;
-		//outline: 1px solid rgb(0 0 0 / 10%);
-		//text-align: center;
 		position: relative;
 		height: calc(21.2px * 4);
 		width: calc(38.1px * 4);;
@@ -138,12 +134,6 @@
 		@media print {
 			break-inside: avoid;
 
-
-			span {
-				font-size: 12px;
-				width: 107px;
-			}
-
 			h4 {
 				word-break: break-word;
 				margin-top: 5px;
@@ -157,11 +147,6 @@
 	}
 
 	.product-qr-code {
-		//display: block;
-		//margin-inline: auto;
-		//max-width: 80%;
-		//margin-bottom: 5px;
-
 		position: absolute;
 		width: 70px;
 		top: 7px;
@@ -182,11 +167,6 @@
 
 	.list-products {
 		font-size: 14px;
-
-		h4 {
-			margin: 0;
-			display: inline-block;
-		}
 
 		tr {
 			outline: 1px solid rgb(0 0 0 / 10%);
