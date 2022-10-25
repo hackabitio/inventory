@@ -2,12 +2,9 @@
 	import { addToStock } from '$lib/form'
 	
 	export let data
-	let showName = false
 	let listView = false
 	let categories = Object.keys(data.categories).map((key) => data.categories[key])
 	let products = Object.keys(data.products).map((key) => data.products[key])
-
-	// products = products.splice(149, 32)
 
 </script>
 
@@ -36,10 +33,7 @@
 		</div>
 	</form>
 	<div class="no-print config-header">
-
-		<label for="showName" class="show-names">Show names
-			<input id="showName" class="sku-input" name="showName" type="checkbox" on:change={() => showName = !showName} />
-		</label>
+		<span></span>
 		<button class="icon-button" aria-label="View product" on:click={() => listView = !listView} >
 			{#if listView}
 				<svg width="50" height="44" viewBox="0 0 50 44" fill="none" xmlns="http://www.w3.org/2000/svg">
