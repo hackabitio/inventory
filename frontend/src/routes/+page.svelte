@@ -23,9 +23,11 @@
 	let submitDisabled
 	let selectedProduct = null
 	let printProduct = null
-	let showName = false
 	$: submitDisabled = !addSku || !addName || !addQty || !addPrice
 	let currentFocus
+	let printWidth = 30
+	let printHeight = 40
+	let qrHeight = 20
 
 	const filterBySku = async () => {
 		const products = Object.keys(data.products).map((key) => data.products[key])
@@ -70,6 +72,10 @@
 		printProduct = product
 		setTimeout(()=>{
 			const el = document.querySelector(".print-details")
+			el.style.width = parseInt(printWidth * 10) + 'px'
+			el.style.height = parseInt(printHeight * 10) + 'px'
+			const qr = el.querySelector('.product-qr-code')
+			qr.style.maxWidth = `calc(${qrHeight}px * 10)`
 			html2canvas(el, {
 				allowTaint: true
 			}).then(canvas => {
@@ -79,11 +85,15 @@
 		}, 10)
 	}
 
-	const toggleName = () => {
-		showName = !showName
+	const changeCanvas = () => {
+		console.log(printHeight)
 		setTimeout(() => {
 			const el = document.querySelector(".print-details")
 			el.style.display = 'block'
+			el.style.width = parseInt(printWidth * 10) + 'px'
+			el.style.height = parseInt(printHeight * 10) + 'px'
+			const qr = el.querySelector('.product-qr-code')
+			qr.style.maxWidth = `calc(${qrHeight}px * 10)`
 			document.getElementById('printCanvas').innerHTML = ''
 			html2canvas(el, {
 				allowTaint: true
@@ -399,17 +409,23 @@
 		<svg on:click={() => printProduct = null} class="close-dialog" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<path d="M17.4699 14.929C18.173 15.6321 18.173 16.771 17.4699 17.4741C17.1212 17.8256 16.6599 18 16.1987 18C15.7375 18 15.2774 17.8242 14.9265 17.4727L8.9993 11.5486L3.0727 17.4713C2.72116 17.8256 2.26051 18 1.79986 18C1.33921 18 0.879119 17.8256 0.527303 17.4713C-0.175768 16.7682 -0.175768 15.6292 0.527303 14.9262L6.45559 8.99789L0.527303 3.07242C-0.175768 2.36935 -0.175768 1.23037 0.527303 0.527303C1.23037 -0.175768 2.36935 -0.175768 3.07242 0.527303L8.9993 6.4584L14.9276 0.530115C15.6307 -0.172955 16.7696 -0.172955 17.4727 0.530115C18.1758 1.23319 18.1758 2.37216 17.4727 3.07523L11.5444 9.00351L17.4699 14.929Z" fill="black"/>
 		</svg>
-		<label for="showName">
-			Show name
-			<input type="checkbox" name="showName" id="showName" on:change={toggleName}>
+		<label for="printWidth">
+			Print width
+			<input type="number" name="printWidth" id="printWidth" bind:value={printWidth} on:change={changeCanvas}>
+		</label>
+		<label for="printHeight">
+			print height
+			<input type="number" name="printHeight" id="printHeight" bind:value={printHeight} on:change={changeCanvas}>
+		</label>
+		<label for="qrHeight">
+			print height
+			<input type="number" name="qrHeight" id="qrHeight" bind:value={qrHeight} on:change={changeCanvas}>
 		</label>
 		{#if printProduct}
 			<div class="print-details">
 				<img class="product-qr-code" src="qr/{printProduct.sku}.png" alt="">
 				<span class="sku">{printProduct.sku}</span>
-				{#if showName}
-					<h4 class="product-name">{printProduct.name}</h4>
-				{/if}
+				<h4 class="product-name">{printProduct.name}</h4>
 			</div>
 
 			<div id="printCanvas"></div>
@@ -440,7 +456,6 @@
 		grid-area: images;
 		display: block;
 		margin-inline: auto;
-		max-width: 180px;
 	}
 
 	.product-details-dialog,
@@ -492,13 +507,24 @@
 	.product-print-dialog {
 		min-width: initial;
 
-		.print-details {
-			width: 300px;
-			text-align: center;
+		label {
+			display: flex;
+			flex-direction: row;
+			margin-top: 10px;
+			max-width: 90%;
+			gap: 10px;
+			align-items: baseline;
+			justify-content: space-between;
 		}
 
-		.product-qr-code {
-			max-width: unset;
+		.print-details {
+			text-align: center;
+			padding-top: 20px;
+		}
+
+		#printCanvas {
+			border: 1px solid rgb(0 0 0 / 20%);
+			margin-top: 20px;
 		}
 
 		.product-name {
