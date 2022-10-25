@@ -7,6 +7,7 @@
 	let skuInput
 	let products = null
 	let isMobile = false
+	let showDetails = false
 	let categories = Object.keys(data.categories).map((key) => data.categories[key])
 	let allProducts = Object.keys(data.products).map((key) => data.products[key])
 
@@ -51,10 +52,16 @@
 	<input bind:this={skuInput} class="sku-input" name="text" autocomplete="off" bind:value="{filterSku}" on:focus={clearSku} on:input={filterBySku} placeholder="SKU" />
 
 	{#if products}
+		<p>
+			<label>
+				Show more details 
+				<input type="checkbox" on:click={() => {showDetails = !showDetails}}>
+			</label>
+		</p>
 		{#each products as product}
 			<section class="product-details">
 				<h3 class="product-name">{product.name}</h3>
-				<div class="details">
+				<div class="details {showDetails ? '' : 'flex'}">
 					<p>
 						<strong>SKU:</strong> {product.sku}
 					</p>
@@ -72,21 +79,18 @@
 							<strong>Warehouse placement:</strong> {product.warehousePlace}
 						</p>
 					{/if}
-					{#if product.inventoryBox}
-						<p>
-							<strong>inventory placement:</strong> {product.inventoryBox}
-						</p>
-					{/if}
 				</div>
-				<img class="product-qr-code" src="qr/{product.sku}.png" alt="">
-				{#if product.details}
+				{#if showDetails}
+					<img class="product-qr-code" src="qr/{product.sku}.png" alt="">
+				{/if}
+				{#if product.details && showDetails}
 					<div class="product-more-details">
 						<h3>More details</h3>
 						<p>{@html product.details.replace(/\r\n/g, '<br />')}</p>
 					</div>
 				{/if}
 				<div class="product-transactions">
-					{#if product.additions.length}
+					{#if product.additions.length && showDetails}
 						<div class="product-additions">
 							<h4>Product additions</h4>
 							<ul>
@@ -111,7 +115,7 @@
 							</ul>
 						</div>
 					{/if}
-					{#if product.deductions.length}
+					{#if product.deductions.length && showDetails}
 						<div class="product-deductions">
 							<h4>Product deductions</h4>
 							<ul>
@@ -178,6 +182,11 @@
 		p {
 			margin-top: 0;
 			margin-bottom: 5px;
+		}
+
+		&.flex {
+			display: flex;
+			justify-content: space-between;
 		}
 	}
 

@@ -350,11 +350,6 @@
 				<p>
 					<strong>Warehouse placement:</strong> {selectedProduct.warehousePlace}
 				</p>
-				{#if selectedProduct.inventoryBox}
-					<p>
-						<strong>inventory placement:</strong> {selectedProduct.inventoryBox}
-					</p>
-				{/if}
 			</div>
 			<img class="product-qr-code" src="qr/{selectedProduct.sku}.png" alt="">
 			{#if selectedProduct.details}
