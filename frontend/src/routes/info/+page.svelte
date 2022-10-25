@@ -75,7 +75,7 @@
 						</p>
 					{/if}
 				</div>
-				<img class="product-qr-code" src="http://localhost:8000/images/{product.sku}.png" alt="">
+				<img class="product-qr-code" src="qr/{product.sku}.png" alt="">
 				{#if product.details}
 					<div class="product-more-details">
 						<h3>More details</h3>
