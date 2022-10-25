@@ -6,11 +6,12 @@
 	let filterSku
 	let skuInput
 	let products = null
+	let isMobile = false
 	let categories = Object.keys(data.categories).map((key) => data.categories[key])
 	let allProducts = Object.keys(data.products).map((key) => data.products[key])
 
 	onMount(async () => {
-		const isMobile = navigator.userAgent.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i);
+		isMobile = navigator.userAgent.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i);
 		filterSku = isMobile ? 'BCSCAN ' : ''
 	})
 
@@ -18,7 +19,7 @@
 		let skus = filterSku.replace('BCSCAN', '').replace(/\s/g, '').toLowerCase()
 		skus = skus.split(',')
 		products = allProducts.filter(product => skus.includes(product.sku.toLowerCase()))
-		if (products && !isMobile) {
+		if (products && isMobile) {
 			skuInput.blur()
 		}
 	}
@@ -52,7 +53,7 @@
 	{#if products}
 		{#each products as product}
 			<section class="product-details">
-				<h1 class="product-name">{product.name}</h1>
+				<h3 class="product-name">{product.name}</h3>
 				<div class="details">
 					<p>
 						<strong>SKU:</strong> {product.sku}
@@ -157,6 +158,11 @@
 						"desc desc images"
 						"details details details"
 						"transactions transactions transactions";
+
+	
+		& + .product-details {
+			border-top: 5px solid rgb(0 0 0 / 5%);
+		}
 	}
 
 	.product-name {
