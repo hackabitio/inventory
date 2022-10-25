@@ -5,9 +5,9 @@
 	export let data
 	let filterSku
 	let skuInput
-	let product = null
+	let products = null
 	let categories = Object.keys(data.categories).map((key) => data.categories[key])
-	let products = Object.keys(data.products).map((key) => data.products[key])
+	let allProducts = Object.keys(data.products).map((key) => data.products[key])
 
 	onMount(async () => {
 		const isMobile = navigator.userAgent.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i);
@@ -15,17 +15,18 @@
 	})
 
 	const filterBySku = e => {
-		let sku = filterSku.replace('BCSCAN ', '')
-		product = products.find(product => product.sku.toLowerCase() === sku.toLowerCase())
-		if (product) {
+		let skus = filterSku.replace('BCSCAN', '').replace(/\s/g, '').toLowerCase()
+		skus = skus.split(',')
+		products = allProducts.filter(product => skus.includes(product.sku.toLowerCase()))
+		if (products && !isMobile) {
 			skuInput.blur()
 		}
 	}
 
 	const clearSku = e => {
-		if (product && isMobile) {
+		if (products && isMobile) {
 			filterSku = 'BCSCAN '
-			product = null
+			products = null
 		}
 	}
 
@@ -48,95 +49,96 @@
 	<h1>Search product info</h1>
 	<input bind:this={skuInput} class="sku-input" name="text" autocomplete="off" bind:value="{filterSku}" on:focus={clearSku} on:input={filterBySku} placeholder="SKU" />
 
-	<section class="product-details">
-
-		{#if product}
-			<h1 class="product-name">{product.name}</h1>
-			<div class="details">
-				<p>
-					<strong>SKU:</strong> {product.sku}
-				</p>
-				<p>
-					<strong>Category:</strong> {categoryName(product.category)}
-				</p>
-				<p>
-					<strong>Quantity:</strong> {product.qty}
-				</p>
-				<p>
-					<strong>Order price:</strong> {product.orderPrice}
-				</p>
-				<p>
-					<strong>Warehouse placement:</strong> {product.warehousePlace}
-				</p>
-				{#if product.inventoryBox}
+	{#if products}
+		{#each products as product}
+			<section class="product-details">
+				<h1 class="product-name">{product.name}</h1>
+				<div class="details">
 					<p>
-						<strong>inventory placement:</strong> {product.inventoryBox}
+						<strong>SKU:</strong> {product.sku}
 					</p>
-				{/if}
-			</div>
-			<img class="product-qr-code" src="http://localhost:8000/images/{product.sku}.png" alt="">
-			{#if product.details}
-				<div class="product-more-details">
-					<h3>More details</h3>
-					<p>{@html product.details.replace(/\r\n/g, '<br />')}</p>
+					<p>
+						<strong>Category:</strong> {categoryName(product.category)}
+					</p>
+					<p>
+						<strong>Quantity:</strong> {product.qty}
+					</p>
+					<p>
+						<strong>Order price:</strong> {product.orderPrice}
+					</p>
+					<p>
+						<strong>Warehouse placement:</strong> {product.warehousePlace}
+					</p>
+					{#if product.inventoryBox}
+						<p>
+							<strong>inventory placement:</strong> {product.inventoryBox}
+						</p>
+					{/if}
 				</div>
-			{/if}
-			<div class="product-transactions">
-				{#if product.additions.length}
-					<div class="product-additions">
-						<h4>Product additions</h4>
-						<ul>
-							<li>
-								<h4 class="transaction-time">Time</h4>
-								<h4 class="transaction-qty">Quantity</h4>
-								<h4 class="transaction-price">Price</h4>
-							</li>
-							{#each product.additions as addition}
-								<li>
-									<div class="transaction-time">
-										{formatDate(addition.time)}
-									</div>
-									<div class="transaction-qty">
-										{addition.qty}
-									</div>
-									<div class="transaction-price">
-										{addition.orderPrice}
-									</div>
-								</li>
-							{/each}
-						</ul>
+				<img class="product-qr-code" src="http://localhost:8000/images/{product.sku}.png" alt="">
+				{#if product.details}
+					<div class="product-more-details">
+						<h3>More details</h3>
+						<p>{@html product.details.replace(/\r\n/g, '<br />')}</p>
 					</div>
 				{/if}
-				{#if product.deductions.length}
-					<div class="product-deductions">
-						<h4>Product deductions</h4>
-						<ul>
-							<li>
-								<h4 class="transaction-time">Time</h4>
-								<h4 class="transaction-qty">Quantity</h4>
-								<h4 class="transaction-price">Price</h4>
-							</li>
-							{#each product.deductions as deduction}
+				<div class="product-transactions">
+					{#if product.additions.length}
+						<div class="product-additions">
+							<h4>Product additions</h4>
+							<ul>
 								<li>
-									<div class="transaction-time">
-										{formatDate(deduction.time) || '-'}
-									</div>
-									<div class="transaction-qty">
-										{deduction.qty || '-'}
-									</div>
-									<div class="transaction-price">
-										{deduction.orderPrice || '-'}
-									</div>
+									<h4 class="transaction-time">Time</h4>
+									<h4 class="transaction-qty">Quantity</h4>
+									<h4 class="transaction-price">Price</h4>
 								</li>
-							{/each}
-						</ul>
-					</div>
-				{/if}
-			</div>
-		{:else}
-			<h1>Nothing to display</h1>
-		{/if}
-	</section>
+								{#each product.additions as addition}
+									<li>
+										<div class="transaction-time">
+											{formatDate(addition.time)}
+										</div>
+										<div class="transaction-qty">
+											{addition.qty}
+										</div>
+										<div class="transaction-price">
+											{addition.orderPrice}
+										</div>
+									</li>
+								{/each}
+							</ul>
+						</div>
+					{/if}
+					{#if product.deductions.length}
+						<div class="product-deductions">
+							<h4>Product deductions</h4>
+							<ul>
+								<li>
+									<h4 class="transaction-time">Time</h4>
+									<h4 class="transaction-qty">Quantity</h4>
+									<h4 class="transaction-price">Price</h4>
+								</li>
+								{#each product.deductions as deduction}
+									<li>
+										<div class="transaction-time">
+											{formatDate(deduction.time) || '-'}
+										</div>
+										<div class="transaction-qty">
+											{deduction.qty || '-'}
+										</div>
+										<div class="transaction-price">
+											{deduction.orderPrice || '-'}
+										</div>
+									</li>
+								{/each}
+							</ul>
+						</div>
+					{/if}
+				</div>
+			</section>
+		{/each}
+	{:else}
+		<h1>Nothing to display</h1>
+	{/if}
 
 </div>
 
