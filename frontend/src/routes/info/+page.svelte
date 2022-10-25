@@ -65,6 +65,9 @@
 				<p>
 					<strong>Order price:</strong> {product.orderPrice}
 				</p>
+				<p>
+					<strong>Warehouse placement:</strong> {product.warehousePlace}
+				</p>
 				{#if product.inventoryBox}
 					<p>
 						<strong>inventory placement:</strong> {product.inventoryBox}
