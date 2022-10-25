@@ -1,4 +1,6 @@
 <script>
+	import { addToStock } from '$lib/form'
+	
 	export let data
 	let showName = false
 	let listView = false
@@ -16,7 +18,25 @@
 
 <div class="content">
 	<h1 class="no-print">All products for print</h1>
+	<form
+					class="generate-pdf"
+					method="dialog"
+					action="/print"
+					use:addToStock
+	>
+		<h3>Download PDF</h3>
+		<div class="form-fields">
+			<label for="labelWidth" class="show-names">Label width
+				<input id="labelWidth" class="" name="labelWidth" type="number" value="30" />
+			</label>
+			<label for="labelHeight" class="show-names">Label height
+				<input id="labelHeight" class="" name="labelHeight" type="number" value="40" />
+			</label>
+			<button id="confirmBtn" value="default" type="submit">Download</button>
+		</div>
+	</form>
 	<div class="no-print config-header">
+
 		<label for="showName" class="show-names">Show names
 			<input id="showName" class="sku-input" name="showName" type="checkbox" on:change={() => showName = !showName} />
 		</label>
@@ -180,5 +200,18 @@
 			font-size: 12px;
 			width: 55%;
 		}
+	}
+
+	.generate-pdf {
+		border: 1px solid rgb(0 0 0 /10%);
+		padding: 10px;
+		margin-bottom: 30px;
+		border-radius: 10px;
+	}
+
+	.form-fields {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
 	}
 </style>
