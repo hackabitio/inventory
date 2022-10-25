@@ -280,6 +280,7 @@
 			</th>
 			<th class="hide-in-mobile">Order price</th>
 			<th class="hide-in-mobile">Category</th>
+			<th class="hide-in-mobile">WHS</th>
 			<th>Actions</th>
 		</tr>
 		{#each filteredProducts as product}
@@ -289,6 +290,7 @@
 				<td>{product.qty || '-'}</td>
 				<td class="hide-in-mobile">{product.orderPrice ? parseFloat(product.orderPrice).toFixed(2) : '-'}</td>
 				<td class="hide-in-mobile">{categoryName(product.category)}</td>
+				<td class="hide-in-mobile">{product.warehousePlace ? product.warehousePlace : '-'}</td>
 				<td class="center-align record-actions">
 					<button class="icon-button" aria-label="View product" on:click={() => selectedProduct = product} >
 						<svg width="22" height="18" viewBox="0 0 22 18" fill="none" xmlns="http://www.w3.org/2000/svg">
