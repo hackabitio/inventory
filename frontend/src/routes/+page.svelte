@@ -535,11 +535,13 @@
 		}
 
 		.product-name {
-			font-size: 18px;
+			font-size: 24px;
+			font-weight: 400;
+			margin-top: 0;
 		}
 
 		.sku {
-			font-size: 20px;
+			font-size: 24px;
 		}
 	}
 

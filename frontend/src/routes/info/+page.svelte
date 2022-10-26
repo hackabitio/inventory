@@ -20,9 +20,11 @@
 		let skus = filterSku.replace('BCSCAN', '').replace(/\s/g, '').toLowerCase()
 		skus = skus.split(',')
 		products = allProducts.filter(product => skus.includes(product.sku.toLowerCase()))
-		if (products && isMobile) {
-			skuInput.blur()
-		}
+		setTimeout(() => {
+			if (products && isMobile) {
+				skuInput.blur()
+			}
+		}, 100)
 	}
 
 	const clearSku = e => {

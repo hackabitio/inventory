@@ -17,7 +17,7 @@ export const POST = async ({ request }) => {
   const form = await request.formData()
   const paperWidth = form.get('labelWidth')
   const paperHeight = form.get('labelHeight')
-  const qrWidth = parseInt(paperWidth / 2)
+  const qrWidth = parseInt(paperWidth / 1.4)
 
   const doc = new PDFDocument({
     size: [toMM(paperWidth), toMM(paperHeight)],
@@ -28,21 +28,23 @@ export const POST = async ({ request }) => {
       right: 2
     }
   })
-  doc.pipe(fs.createWriteStream('example.pdf'))
+  doc.pipe(fs.createWriteStream('print.pdf'))
   doc.fontSize(8)
   const products = await getProducts(true)
   products.forEach(product => {
     if (fs.existsSync(`static/qr/${product.sku}.png`)) {
       doc
       .addPage()
-      .image(`static/qr/${product.sku}.png`, toMM(parseInt((paperWidth - qrWidth) / 2)), toMM(2), {fit: [toMM(qrWidth), toMM(qrWidth)], align: 'center'})
+      .image(`static/qr/${product.sku}.png`, toMM(parseInt((paperWidth - qrWidth) / 2) + 1), toMM(2), {fit: [toMM(qrWidth), toMM(qrWidth)], align: 'center'})
       .moveDown()
       .text('', 0, toMM(parseInt(qrWidth + 2)))
-      .font('Helvetica', 7)
+      .font('Helvetica', 8)
       .text(product.sku, {
         align: 'center'
       })
-      .font('Times-Roman', 8)
+      .font('Helvetica', 2)
+      .moveDown()
+      .font('Times-Roman', 9)
       .restore()
       .text(product.name, {
         align: 'center'
@@ -50,7 +52,17 @@ export const POST = async ({ request }) => {
     } else {
       doc
       .addPage()
-      .text(product.name)
+      .moveDown()
+      .font('Helvetica', 8)
+      .text(product.sku, {
+        align: 'center'
+      })
+      .moveDown()
+      .font('Times-Roman', 9)
+      .restore()
+      .text(product.name, {
+        align: 'center'
+      })
     }
   });
   doc.end();
