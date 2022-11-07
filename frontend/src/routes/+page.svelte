@@ -44,16 +44,6 @@
 		filteredProducts = filterName ? filteredProducts.filter(product => product.name.toLowerCase().indexOf(filterName.toLowerCase()) > -1) : filteredProducts
 	}
 
-	const filterByCategory = async (e) => {
-		let filterCategory = e.target.value
-		const products = productsArr()
-		if (filterCategory == 0) {
-			filteredProducts = products
-		} else {
-			filteredProducts = filterCategory ? products.filter(product => product.category === filterCategory) : products
-		}
-	}
-
 	const findProduct = async (e) => {
 		foundProducts = productsArr().filter(product => product.name.toLowerCase().indexOf(addName.toLowerCase()) > -1)
 		showNames = addName && addName.length && foundProducts.length
