@@ -6,13 +6,16 @@
 	export let data
 	let categories = Object.keys(data.categories).map((key) => data.categories[key])
 
-	$: filteredProducts = Object.keys(data.products).map((key) => data.products[key])
+	const productsArr = () => Object.keys(data.products).map((key) => data.products[key])
+
+	$: filteredProducts = productsArr()
 	let formDialogOpen = false
-	let foundProducts = Object.keys(data.products).map((key) => data.products[key])
+	let foundProducts = productsArr()
 	let showNames = false
 	let filterSku
 	let filterName
 	let categorySelect
+	let selectedCategory
 	let addID
 	let addSku
 	let addName
@@ -30,19 +33,20 @@
 	let printHeight = 40
 	let qrHeight = 20
 
-	const filterBySku = async () => {
-		const products = Object.keys(data.products).map((key) => data.products[key])
-		filteredProducts = filterSku ? products.filter(product => product.sku.indexOf(filterSku) > -1) : products
-	}
-
-	const filterByName = async () => {
-		const products = Object.keys(data.products).map((key) => data.products[key])
-		filteredProducts = filterName ? products.filter(product => product.name.toLowerCase().indexOf(filterName.toLowerCase()) > -1) : products
+	const filterProducts = async () => {
+		filteredProducts = productsArr()
+		if (selectedCategory == 0) {
+			filteredProducts = productsArr()
+		} else {
+			filteredProducts = selectedCategory ? filteredProducts.filter(product => product.category === selectedCategory) : filteredProducts
+		}
+		filteredProducts = filterSku ? filteredProducts.filter(product => product.sku.indexOf(filterSku) > -1) : filteredProducts
+		filteredProducts = filterName ? filteredProducts.filter(product => product.name.toLowerCase().indexOf(filterName.toLowerCase()) > -1) : filteredProducts
 	}
 
 	const filterByCategory = async (e) => {
 		let filterCategory = e.target.value
-		const products = Object.keys(data.products).map((key) => data.products[key])
+		const products = productsArr()
 		if (filterCategory == 0) {
 			filteredProducts = products
 		} else {
@@ -51,7 +55,7 @@
 	}
 
 	const findProduct = async (e) => {
-		foundProducts = Object.keys(data.products).map((key) => data.products[key]).filter(product => product.name.toLowerCase().indexOf(addName.toLowerCase()) > -1)
+		foundProducts = productsArr().filter(product => product.name.toLowerCase().indexOf(addName.toLowerCase()) > -1)
 		showNames = addName && addName.length && foundProducts.length
 		if (showNames) {
 			let autoSuggest = document.querySelectorAll('.products-autocomplete ul li')
@@ -258,11 +262,11 @@
 
 	<h2>Filter by:</h2>
 
-	<input name="text" autocomplete="off" bind:value="{filterSku}" on:keyup={filterBySku} placeholder="SKU" />
-	<input name="text" autocomplete="off" bind:value="{filterName}" on:keyup={filterByName} placeholder="Product name" />
+	<input name="text" autocomplete="off" bind:value="{filterSku}" on:keyup={filterProducts} placeholder="SKU" />
+	<input name="text" autocomplete="off" bind:value="{filterName}" on:keyup={filterProducts} placeholder="Product name" />
 	{#if categories.length}
 			Category
-			<select on:change={filterByCategory} name="category" id="categoryFilter">
+			<select bind:value={selectedCategory} on:change={filterProducts} name="category" id="categoryFilter">
 				<option value="0">All</option>
 				{#each categories as category}
 					<option value="{category.id}">{category.name}</option>
