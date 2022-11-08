@@ -102,7 +102,6 @@
 	}
 
 	const changeCanvas = () => {
-		console.log(printHeight)
 		setTimeout(() => {
 			const el = document.querySelector(".print-details")
 			el.style.display = 'block'
