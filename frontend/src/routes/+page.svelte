@@ -6,7 +6,28 @@
 	export let data
 	let categories = Object.keys(data.categories).map((key) => data.categories[key])
 
-	const productsArr = () => Object.keys(data.products).map((key) => data.products[key])
+	const productsArr = () => {
+		let products = Object.keys(data.products).map((key) => {
+			let product = data.products[key]
+			if (product.avgPrice == undefined) {
+				let additionsPrice = 0
+				let additionsQty = 0
+				let productPrice = product.orderPrice
+				if (product.additions) {
+					product.additions.forEach(addition => {
+						additionsQty += addition.qty
+						additionsPrice += parseFloat(addition.qty * addition.orderPrice)
+					})
+					let productQty = product.qty - additionsQty
+					productPrice = parseFloat((product.orderPrice * productQty) + additionsPrice) / parseInt(additionsQty + productQty)
+				}
+				product.avgPrice = productPrice < 1 ? parseFloat(productPrice).toFixed(3) : parseFloat(productPrice).toFixed(2)
+			}
+			return product
+		})
+
+		return products
+	}
 
 	$: filteredProducts = productsArr()
 	let formDialogOpen = false
@@ -282,7 +303,8 @@
 				<td>{product.sku || '-'}</td>
 				<td>{product.name || '-'}</td>
 				<td>{product.qty || '-'}</td>
-				<td class="hide-in-mobile">{product.orderPrice ? parseFloat(product.orderPrice).toFixed(2) : '-'}</td>
+				<!-- <td class="hide-in-mobile">{product.orderPrice ? parseFloat(product.orderPrice).toFixed(2) : '-'}</td> -->
+				<td class="hide-in-mobile">{product.avgPrice ? product.avgPrice : '-'}</td>
 				<td class="hide-in-mobile">{categoryName(product.category)}</td>
 				<td class="hide-in-mobile">{product.warehousePlace ? product.warehousePlace : '-'}</td>
 				<td class="center-align record-actions">
