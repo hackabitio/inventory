@@ -362,9 +362,11 @@
 				<p>
 					<strong>Order price:</strong> {selectedProduct.orderPrice}
 				</p>
-				<p>
-					<strong>Warehouse placement:</strong> {selectedProduct.warehousePlace}
-				</p>
+				{#if selectedProduct.warehousePlace}
+					<p>
+						<strong>Warehouse placement:</strong> {selectedProduct.warehousePlace}
+					</p>
+				{/if}
 			</div>
 			<img class="product-qr-code" src="qr/{selectedProduct.sku}.png" alt="">
 			{#if selectedProduct.details}
